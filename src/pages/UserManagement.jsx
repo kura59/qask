@@ -1,5 +1,12 @@
+import { HeaderLayout } from "../components/templates/HeaderLayout";
+
 const UserManagement = () => {
-  return <p>ユーザー管理ページです</p>;
+  return (
+    <>
+      <HeaderLayout />
+      <p>ユーザー一覧ページです</p>
+    </>
+  );
 };
 
 export default UserManagement;

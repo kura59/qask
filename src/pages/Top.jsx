@@ -1,12 +1,12 @@
 import { HeaderLayout } from "../components/templates/HeaderLayout";
 
-const Setting = () => {
+const Top = () => {
   return (
     <>
       <HeaderLayout />
-      <p>設定ページです</p>
+      <p>トップページです</p>
     </>
   );
 };
 
-export default Setting;
+export default Top;
