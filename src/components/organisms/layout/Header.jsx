@@ -6,7 +6,7 @@ import MenuDrawer from "../../molecules/MenuDrawer";
 import { useRouter } from "next/router";
 
 const NAV_ITEMS = [
-  { href: "/UserManagement", label: "ユーザー一覧" },
+  { href: "/Board", label: "ボード" },
   { href: "/Setting", label: "設定" },
 ];
 
@@ -17,9 +17,9 @@ export const Header = () => {
     e.preventDefault();
     router.push("/Top");
   };
-  const onClickUserManagement = (e) => {
+  const onClickBoard = (e) => {
     e.preventDefault();
-    router.push("/UserManagement");
+    router.push("/Board");
   };
   const onClickSetting = (e) => {
     e.preventDefault();
@@ -70,7 +70,7 @@ export const Header = () => {
         isOpen={isOpen}
         onClose={onClose}
         onClickTop={onClickTop}
-        onClickUserManagement={onClickUserManagement}
+        onClickBoard={onClickBoard}
         onClickSetting={onClickSetting}
       />
     </>
