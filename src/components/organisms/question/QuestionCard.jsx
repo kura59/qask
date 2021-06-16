@@ -4,7 +4,7 @@ import { Stack } from "@chakra-ui/layout";
 import { Box } from "@chakra-ui/layout";
 
 export const QuestionCard = (props) => {
-  const { id, question, userName, onClick } = props;
+  const { id, title, when, onClick } = props;
   return (
     <Box
       w="250px"
@@ -18,10 +18,10 @@ export const QuestionCard = (props) => {
     >
       <Stack textAlign="center">
         <Text fontSize="lg" fontWeight="bold">
-          {question}
+          {title}
         </Text>
         <Text fontSize="sm" color="gray">
-          {userName}
+          {when}
         </Text>
       </Stack>
     </Box>

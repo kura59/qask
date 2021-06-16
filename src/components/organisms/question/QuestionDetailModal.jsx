@@ -1,6 +1,6 @@
 import { FormLabel, FormControl } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";
-import { Stack } from "@chakra-ui/layout";
+import { Stack, Flex } from "@chakra-ui/layout";
 import {
   ModalHeader,
   ModalBody,
@@ -9,10 +9,11 @@ import {
   ModalOverlay,
   Modal,
 } from "@chakra-ui/modal";
+import { Button } from "@chakra-ui/button";
 import { useState } from "react";
 
 export const QuestionDetailModal = (props) => {
-  const { question, isOpen, onClose } = props;
+  const { question, isOpen, onClose, dispatch } = props;
   const [title, setTitle] = useState("");
   const [when, setWhen] = useState("");
   const [where, setWhere] = useState("");
@@ -26,6 +27,7 @@ export const QuestionDetailModal = (props) => {
       onClose={onClose}
       autoFocus={false}
       motionPreset="slideInBottom"
+      // size={{ base: "450px", md: "aa" }}
     >
       <ModalOverlay />
       <ModalContent pb={6}>
@@ -108,6 +110,28 @@ export const QuestionDetailModal = (props) => {
                   <FormLabel>How（解決策）</FormLabel>
                   <Input value={how} onChange={(e) => setHow(e.target.value)} />
                 </FormControl>
+                <Flex justify="flex-end">
+                  <Button
+                    w="100px"
+                    bg="teal.400"
+                    color="white"
+                    _hover={{ opacity: 0.8 }}
+                    disabled=""
+                    onClick={() =>
+                      dispatch({
+                        type: "ADD",
+                        title: title,
+                        when: when,
+                        where: where,
+                        what: what,
+                        why: why,
+                        how: how,
+                      })
+                    }
+                  >
+                    登録
+                  </Button>
+                </Flex>
               </Stack>
             </ModalBody>
           </>
