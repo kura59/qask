@@ -4,24 +4,24 @@ import { Stack } from "@chakra-ui/layout";
 import { Box } from "@chakra-ui/layout";
 
 export const QuestionCard = (props) => {
-  const { id, title, when, onClick } = props;
+  const { question, onClick } = props;
   return (
     <Box
-      w="250px"
+      w={{ base: "md", md: 250 }}
       h="90px"
       bg="white"
       borderRadius="10px"
       shadow="md"
       p={4}
       _hover={{ cursor: "pointer", opacity: 0.8 }}
-      onClick={() => onClick(id)}
+      onClick={() => onClick(question.id)}
     >
       <Stack textAlign="center">
         <Text fontSize="lg" fontWeight="bold">
-          {title}
+          {question.title}
         </Text>
         <Text fontSize="sm" color="gray">
-          {when}
+          {question.when}
         </Text>
       </Stack>
     </Box>

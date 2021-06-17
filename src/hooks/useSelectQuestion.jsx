@@ -5,8 +5,12 @@ export const useSelectQuestion = () => {
   const [selectedQuestion, setSelectedQuestion] = useState(null);
   const onSelectQuestion = useCallback((props) => {
     const { id, questions, onOpen } = props;
-    const targetQuestion = questions.find((question) => question.id === id);
-    setSelectedQuestion(targetQuestion);
+    if (id === 0) {
+      setSelectedQuestion(null);
+    } else {
+      const targetQuestion = questions.find((question) => question.id === id);
+      setSelectedQuestion(targetQuestion);
+    }
     onOpen();
   }, []);
   return { onSelectQuestion, selectedQuestion };
