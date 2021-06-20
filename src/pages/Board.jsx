@@ -12,7 +12,7 @@ import { useSelectQuestion } from "../hooks/useSelectQuestion";
 // stateとactionを受け取り、actionのtypeによってstateの更新方法を変える
 const reducer = (state, action) => {
   switch (action.type) {
-    case "ADD":
+    case "CREATE":
       action.setTitle("");
       action.setWhen("");
       action.setWhere("");
@@ -48,6 +48,20 @@ const reducer = (state, action) => {
           },
         ];
       }
+    case "UPDATE":
+      const state_copy = state.slice();
+      state_copy.map((q) => {
+        if (q.id === action.id) {
+          q.title = action.title;
+          q.when = action.when;
+          q.where = action.where;
+          q.who = action.who;
+          q.what = action.what;
+          q.why = action.why;
+          q.how = action.how;
+        }
+      });
+      return state_copy;
   }
 };
 
@@ -71,7 +85,7 @@ const Board = () => {
       <Wrap p={{ base: 4, md: 10 }} spacing="30px">
         <WrapItem>
           <Box
-            w={{ base: "md", md: 250 }}
+            w={{ base: "100vw", md: 250 }}
             h="60px"
             bg="white"
             borderRadius="10px"

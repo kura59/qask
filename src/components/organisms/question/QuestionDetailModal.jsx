@@ -1,6 +1,6 @@
 import { FormLabel, FormControl } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";
-import { Stack, Flex } from "@chakra-ui/layout";
+import { Stack } from "@chakra-ui/layout";
 import {
   ModalHeader,
   ModalBody,
@@ -8,9 +8,10 @@ import {
   ModalContent,
   ModalOverlay,
   Modal,
+  ModalFooter,
 } from "@chakra-ui/modal";
-import { Button } from "@chakra-ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import PrimaryButton from "../../atoms/button/PrimaryButton";
 
 export const QuestionDetailModal = (props) => {
   const { question, isOpen, onClose, dispatch } = props;
@@ -22,9 +23,29 @@ export const QuestionDetailModal = (props) => {
   const [why, setWhy] = useState("");
   const [how, setHow] = useState("");
 
-  const onClickButton = () => {
+  useEffect(() => {
+    if (question) {
+      setTitle(question.title);
+      setWhen(question.when);
+      setWhere(question.where);
+      setWho(question.who);
+      setWhat(question.what);
+      setWhy(question.why);
+      setHow(question.how);
+    } else {
+      setTitle("");
+      setWhen("");
+      setWhere("");
+      setWho("");
+      setWhat("");
+      setWhy("");
+      setHow("");
+    }
+  }, [question]);
+
+  const onClickCreate = () => {
     dispatch({
-      type: "ADD",
+      type: "CREATE",
       title: title,
       when: when,
       where: where,
@@ -42,6 +63,22 @@ export const QuestionDetailModal = (props) => {
     });
     onClose();
   };
+
+  const onClickUpdate = () => {
+    dispatch({
+      type: "UPDATE",
+      id: question.id,
+      title: title,
+      when: when,
+      where: where,
+      who: who,
+      what: what,
+      why: why,
+      how: how,
+    });
+    onClose();
+  };
+
   return (
     <Modal
       isOpen={isOpen}
@@ -52,124 +89,51 @@ export const QuestionDetailModal = (props) => {
     >
       <ModalOverlay />
       <ModalContent pb={6}>
-        {question ? ( //質問カードをクリックした際の詳細表示
-          <>
-            <ModalHeader mt={6}>
-              <Input
-                placeholder="タイトル"
-                value={question.title}
-                onChange={(e) => setTitle(e.target.value)}
-              />
-            </ModalHeader>
-            <ModalCloseButton />
-            <ModalBody mx={4}>
-              <Stack spacing={4}>
-                <FormControl>
-                  <FormLabel>When（発生日時・期限）</FormLabel>
-                  <Input
-                    value={question.when}
-                    onChange={(e) => setWhen(e.target.value)}
-                  />
-                </FormControl>
-                <FormControl>
-                  <FormLabel>Where（発生ケース）</FormLabel>
-                  <Input
-                    value={question.where}
-                    onChange={(e) => setWhere(e.target.value)}
-                  />
-                </FormControl>
-                <FormControl>
-                  <FormLabel>Who（担当者）</FormLabel>
-                  <Input
-                    value={question.who}
-                    onChange={(e) => setWho(e.target.value)}
-                  />
-                </FormControl>
-                <FormControl>
-                  <FormLabel>What（問題概要）</FormLabel>
-                  <Input
-                    value={question.what}
-                    onChange={(e) => setWhat(e.target.value)}
-                  />
-                </FormControl>
-                <FormControl>
-                  <FormLabel>Why（発生原因）</FormLabel>
-                  <Input
-                    value={question.why}
-                    onChange={(e) => setWhy(e.target.value)}
-                  />
-                </FormControl>
-                <FormControl>
-                  <FormLabel>How（解決策）</FormLabel>
-                  <Input
-                    value={question.how}
-                    onChange={(e) => setHow(e.target.value)}
-                  />
-                </FormControl>
-              </Stack>
-            </ModalBody>
-          </>
+        <ModalHeader mt={6}>
+          <Input
+            placeholder="タイトル"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+        </ModalHeader>
+        <ModalCloseButton />
+        <ModalBody mx={4}>
+          <Stack spacing={4}>
+            <FormControl>
+              <FormLabel>When（発生日時・期限）</FormLabel>
+              <Input value={when} onChange={(e) => setWhen(e.target.value)} />
+            </FormControl>
+            <FormControl>
+              <FormLabel>Where（発生ケース）</FormLabel>
+              <Input value={where} onChange={(e) => setWhere(e.target.value)} />
+            </FormControl>
+            <FormControl>
+              <FormLabel>Who（担当者）</FormLabel>
+              <Input value={who} onChange={(e) => setWho(e.target.value)} />
+            </FormControl>
+            <FormControl>
+              <FormLabel>What（問題概要）</FormLabel>
+              <Input value={what} onChange={(e) => setWhat(e.target.value)} />
+            </FormControl>
+            <FormControl>
+              <FormLabel>Why（発生原因）</FormLabel>
+              <Input value={why} onChange={(e) => setWhy(e.target.value)} />
+            </FormControl>
+            <FormControl>
+              <FormLabel>How（解決策）</FormLabel>
+              <Input value={how} onChange={(e) => setHow(e.target.value)} />
+            </FormControl>
+          </Stack>
+        </ModalBody>
+        {question ? ( //作成済み質問カードクリック時
+          <ModalFooter>
+            <PrimaryButton onClick={onClickUpdate}>更新</PrimaryButton>
+          </ModalFooter>
         ) : (
-          //「+ new question」クリック時の質問作成用モーダル表示
-          <>
-            <ModalHeader mt={6}>
-              <Input
-                placeholder="タイトル"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-              />
-            </ModalHeader>
-            <ModalCloseButton />
-            <ModalBody mx={4}>
-              <Stack spacing={4}>
-                <FormControl>
-                  <FormLabel>When（発生日時・期限）</FormLabel>
-                  <Input
-                    value={when}
-                    onChange={(e) => setWhen(e.target.value)}
-                  />
-                </FormControl>
-                <FormControl>
-                  <FormLabel>Where（発生ケース）</FormLabel>
-                  <Input
-                    value={where}
-                    onChange={(e) => setWhere(e.target.value)}
-                  />
-                </FormControl>
-                <FormControl>
-                  <FormLabel>Who（担当者）</FormLabel>
-                  <Input value={who} onChange={(e) => setWho(e.target.value)} />
-                </FormControl>
-                <FormControl>
-                  <FormLabel>What（問題概要）</FormLabel>
-                  <Input
-                    value={what}
-                    onChange={(e) => setWhat(e.target.value)}
-                  />
-                </FormControl>
-                <FormControl>
-                  <FormLabel>Why（発生原因）</FormLabel>
-                  <Input value={why} onChange={(e) => setWhy(e.target.value)} />
-                </FormControl>
-                <FormControl>
-                  <FormLabel>How（解決策）</FormLabel>
-                  <Input value={how} onChange={(e) => setHow(e.target.value)} />
-                </FormControl>
-                <Flex justify="flex-end">
-                  <Button
-                    w="100px"
-                    bg="teal.400"
-                    color="white"
-                    _hover={{ opacity: 0.8 }}
-                    disabled=""
-                    onClick={onClickButton}
-                  >
-                    登録
-                  </Button>
-                </Flex>
-              </Stack>
-            </ModalBody>
-          </>
+          //「+ new question」クリック時（質問作成用）
+          <ModalFooter>
+            <PrimaryButton onClick={onClickCreate}>作成</PrimaryButton>
+          </ModalFooter>
         )}
       </ModalContent>
     </Modal>
