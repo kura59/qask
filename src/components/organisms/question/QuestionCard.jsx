@@ -7,7 +7,7 @@ export const QuestionCard = (props) => {
   const { question, onClick } = props;
   return (
     <Box
-      w={{ base: "md", md: 250 }}
+      w={{ base: "100vw", md: 250 }}
       h="90px"
       bg="white"
       borderRadius="10px"
