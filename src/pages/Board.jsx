@@ -85,7 +85,7 @@ const Board = () => {
       <Wrap p={{ base: 4, md: 10 }} spacing="30px">
         <WrapItem>
           <Box
-            w={{ base: "100vw", md: 250 }}
+            w={{ base: "90vw", md: 250 }}
             h="60px"
             bg="white"
             borderRadius="10px"

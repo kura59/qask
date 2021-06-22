@@ -1,4 +1,3 @@
-import { Image } from "@chakra-ui/image";
 import { Text } from "@chakra-ui/layout";
 import { Stack } from "@chakra-ui/layout";
 import { Box } from "@chakra-ui/layout";
@@ -7,7 +6,7 @@ export const QuestionCard = (props) => {
   const { question, onClick } = props;
   return (
     <Box
-      w={{ base: "100vw", md: 250 }}
+      w={{ base: "90vw", md: 250 }}
       h="90px"
       bg="white"
       borderRadius="10px"

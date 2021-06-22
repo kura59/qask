@@ -10,6 +10,7 @@ import {
   Modal,
   ModalFooter,
 } from "@chakra-ui/modal";
+import { Textarea } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import PrimaryButton from "../../atoms/button/PrimaryButton";
 
@@ -85,10 +86,9 @@ export const QuestionDetailModal = (props) => {
       onClose={onClose}
       autoFocus={false}
       motionPreset="slideInBottom"
-      // size={{ base: "450px", md: "aa" }}
     >
       <ModalOverlay />
-      <ModalContent pb={6}>
+      <ModalContent pb={6} h="inherit" w="100%" maxW="" mx={30}>
         <ModalHeader mt={6}>
           <Input
             placeholder="タイトル"
@@ -97,11 +97,15 @@ export const QuestionDetailModal = (props) => {
           />
         </ModalHeader>
         <ModalCloseButton />
-        <ModalBody mx={4}>
+        <ModalBody mx={4} overflowY="scroll">
           <Stack spacing={4}>
             <FormControl>
               <FormLabel>When（発生日時・期限）</FormLabel>
-              <Input value={when} onChange={(e) => setWhen(e.target.value)} />
+              <Input
+                type="date"
+                value={when}
+                onChange={(e) => setWhen(e.target.value)}
+              />
             </FormControl>
             <FormControl>
               <FormLabel>Where（発生ケース）</FormLabel>
@@ -113,15 +117,18 @@ export const QuestionDetailModal = (props) => {
             </FormControl>
             <FormControl>
               <FormLabel>What（問題概要）</FormLabel>
-              <Input value={what} onChange={(e) => setWhat(e.target.value)} />
+              <Textarea
+                value={what}
+                onChange={(e) => setWhat(e.target.value)}
+              />
             </FormControl>
             <FormControl>
               <FormLabel>Why（発生原因）</FormLabel>
-              <Input value={why} onChange={(e) => setWhy(e.target.value)} />
+              <Textarea value={why} onChange={(e) => setWhy(e.target.value)} />
             </FormControl>
             <FormControl>
               <FormLabel>How（解決策）</FormLabel>
-              <Input value={how} onChange={(e) => setHow(e.target.value)} />
+              <Textarea value={how} onChange={(e) => setHow(e.target.value)} />
             </FormControl>
           </Stack>
         </ModalBody>
