@@ -1,6 +1,6 @@
 import { FormLabel, FormControl } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";
-import { Stack } from "@chakra-ui/layout";
+import { Stack, Flex } from "@chakra-ui/layout";
 import {
   ModalHeader,
   ModalBody,
@@ -10,9 +10,10 @@ import {
   Modal,
   ModalFooter,
 } from "@chakra-ui/modal";
-import { Textarea } from "@chakra-ui/react";
+import { Select, Spacer, Textarea } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import PrimaryButton from "../../atoms/button/PrimaryButton";
+import DeleteQuestionButton from "../../atoms/button/DeleteQuestionButton";
 
 export const QuestionDetailModal = (props) => {
   const { question, isOpen, onClose, dispatch } = props;
@@ -80,6 +81,10 @@ export const QuestionDetailModal = (props) => {
     onClose();
   };
 
+  const onClickDelete = () => {
+    alert("削除");
+  };
+
   return (
     <Modal
       isOpen={isOpen}
@@ -89,6 +94,7 @@ export const QuestionDetailModal = (props) => {
     >
       <ModalOverlay />
       <ModalContent pb={6} h="inherit" w="100%" maxW="" mx={30}>
+        <ModalCloseButton />
         <ModalHeader mt={6}>
           <Input
             placeholder="タイトル"
@@ -96,7 +102,6 @@ export const QuestionDetailModal = (props) => {
             onChange={(e) => setTitle(e.target.value)}
           />
         </ModalHeader>
-        <ModalCloseButton />
         <ModalBody mx={4} overflowY="scroll">
           <Stack spacing={4}>
             <FormControl>
@@ -132,16 +137,21 @@ export const QuestionDetailModal = (props) => {
             </FormControl>
           </Stack>
         </ModalBody>
-        {question ? ( //作成済み質問カードクリック時
-          <ModalFooter>
+        <ModalFooter>
+          <DeleteQuestionButton onClick={onClickDelete} />
+          <Spacer />
+          <Select w={40} mr={{ base: 3, md: 5 }}>
+            <option value="1">整理中</option>
+            <option value="2">質問中</option>
+            <option value="3">解決済み</option>
+          </Select>
+          {question ? ( //作成済み質問カードクリック時
             <PrimaryButton onClick={onClickUpdate}>更新</PrimaryButton>
-          </ModalFooter>
-        ) : (
-          //「+ new question」クリック時（質問作成用）
-          <ModalFooter>
+          ) : (
+            //「+ new question」クリック時（質問作成用）
             <PrimaryButton onClick={onClickCreate}>作成</PrimaryButton>
-          </ModalFooter>
-        )}
+          )}
+        </ModalFooter>
       </ModalContent>
     </Modal>
   );
