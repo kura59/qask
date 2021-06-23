@@ -62,6 +62,13 @@ const reducer = (state, action) => {
         }
       });
       return state_copy;
+    case "DELETE":
+      const newState = state.filter((q) => q.id !== action.id);
+      if (newState.length !== 0) {
+        return newState;
+      } else {
+        return null;
+      }
   }
 };
 

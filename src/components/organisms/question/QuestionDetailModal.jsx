@@ -10,10 +10,12 @@ import {
   Modal,
   ModalFooter,
 } from "@chakra-ui/modal";
+import { useDisclosure } from "@chakra-ui/hooks";
 import { Select, Spacer, Textarea } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import PrimaryButton from "../../atoms/button/PrimaryButton";
 import DeleteQuestionButton from "../../atoms/button/DeleteQuestionButton";
+import DeleteDialog from "../../molecules/DeleteDialog";
 
 export const QuestionDetailModal = (props) => {
   const { question, isOpen, onClose, dispatch } = props;
@@ -24,6 +26,12 @@ export const QuestionDetailModal = (props) => {
   const [what, setWhat] = useState("");
   const [why, setWhy] = useState("");
   const [how, setHow] = useState("");
+
+  const {
+    isOpen: isOpenAlert,
+    onOpen: onOpenAlert,
+    onClose: onCloseAlert,
+  } = useDisclosure();
 
   useEffect(() => {
     if (question) {
@@ -82,7 +90,12 @@ export const QuestionDetailModal = (props) => {
   };
 
   const onClickDelete = () => {
-    alert("削除");
+    dispatch({
+      type: "DELETE",
+      id: question.id,
+    });
+    onCloseAlert();
+    onClose();
   };
 
   return (
@@ -138,7 +151,7 @@ export const QuestionDetailModal = (props) => {
           </Stack>
         </ModalBody>
         <ModalFooter>
-          <DeleteQuestionButton onClick={onClickDelete} />
+          {question ? <DeleteQuestionButton onClick={onOpenAlert} /> : null}
           <Spacer />
           <Select w={40} mr={{ base: 3, md: 5 }}>
             <option value="1">整理中</option>
@@ -153,6 +166,11 @@ export const QuestionDetailModal = (props) => {
           )}
         </ModalFooter>
       </ModalContent>
+      <DeleteDialog
+        isOpenAlert={isOpenAlert}
+        onCloseAlert={onCloseAlert}
+        onClickDelete={onClickDelete}
+      />
     </Modal>
   );
 };
