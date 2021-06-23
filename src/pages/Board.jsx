@@ -20,6 +20,7 @@ const reducer = (state, action) => {
       action.setWhat("");
       action.setWhy("");
       action.setHow("");
+      action.setStatus("1");
       if (state) {
         return [
           ...state,
@@ -32,6 +33,7 @@ const reducer = (state, action) => {
             what: action.what,
             why: action.why,
             how: action.how,
+            status: action.status,
           },
         ];
       } else {
@@ -45,6 +47,7 @@ const reducer = (state, action) => {
             what: action.what,
             why: action.why,
             how: action.how,
+            status: action.status,
           },
         ];
       }
@@ -59,6 +62,7 @@ const reducer = (state, action) => {
           q.what = action.what;
           q.why = action.why;
           q.how = action.how;
+          q.status = action.status;
         }
       });
       return state_copy;

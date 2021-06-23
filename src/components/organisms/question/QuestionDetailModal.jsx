@@ -26,6 +26,7 @@ export const QuestionDetailModal = (props) => {
   const [what, setWhat] = useState("");
   const [why, setWhy] = useState("");
   const [how, setHow] = useState("");
+  const [status, setStatus] = useState("");
 
   const {
     isOpen: isOpenAlert,
@@ -42,6 +43,7 @@ export const QuestionDetailModal = (props) => {
       setWhat(question.what);
       setWhy(question.why);
       setHow(question.how);
+      setStatus(question.status);
     } else {
       setTitle("");
       setWhen("");
@@ -50,6 +52,7 @@ export const QuestionDetailModal = (props) => {
       setWhat("");
       setWhy("");
       setHow("");
+      setStatus("1");
     }
   }, [question]);
 
@@ -63,6 +66,7 @@ export const QuestionDetailModal = (props) => {
       what: what,
       why: why,
       how: how,
+      status: status,
       setTitle: setTitle,
       setWhen: setWhen,
       setWhere: setWhere,
@@ -70,6 +74,7 @@ export const QuestionDetailModal = (props) => {
       setWhat: setWhat,
       setWhy: setWhy,
       setHow: setHow,
+      setStatus: setStatus,
     });
     onClose();
   };
@@ -85,6 +90,7 @@ export const QuestionDetailModal = (props) => {
       what: what,
       why: why,
       how: how,
+      status: status,
     });
     onClose();
   };
@@ -97,6 +103,17 @@ export const QuestionDetailModal = (props) => {
     onCloseAlert();
     onClose();
   };
+
+  const STATUS = [
+    { code: "1", name: "整理中" },
+    { code: "2", name: "質問中" },
+    { code: "3", name: "解決済み" },
+  ];
+  const options = STATUS.map((option) => (
+    <option key={option.code} value={option.code}>
+      {option.name}
+    </option>
+  ));
 
   return (
     <Modal
@@ -153,10 +170,13 @@ export const QuestionDetailModal = (props) => {
         <ModalFooter>
           {question ? <DeleteQuestionButton onClick={onOpenAlert} /> : null}
           <Spacer />
-          <Select w={40} mr={{ base: 3, md: 5 }}>
-            <option value="1">整理中</option>
-            <option value="2">質問中</option>
-            <option value="3">解決済み</option>
+          <Select
+            w={40}
+            mr={{ base: 3, md: 5 }}
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
+          >
+            {options}
           </Select>
           {question ? ( //作成済み質問カードクリック時
             <PrimaryButton onClick={onClickUpdate}>更新</PrimaryButton>
