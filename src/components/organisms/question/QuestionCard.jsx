@@ -6,8 +6,8 @@ export const QuestionCard = (props) => {
   const { question, onClick } = props;
   return (
     <Box
-      w={{ base: "90vw", md: 250 }}
-      h="90px"
+      w={{ base: "80vw", md: "28vw" }}
+      h="auto"
       bg="white"
       borderRadius="10px"
       shadow="md"
@@ -16,7 +16,7 @@ export const QuestionCard = (props) => {
       onClick={() => onClick(question.id)}
     >
       <Stack textAlign="center">
-        <Text fontSize="lg" fontWeight="bold">
+        <Text fontSize="md" fontWeight="bold">
           {question.title}
         </Text>
         <Text fontSize="sm" color="gray">

@@ -54,7 +54,7 @@ export const QuestionDetailModal = (props) => {
       setHow("");
       setStatus("1");
     }
-  }, [question]);
+  }, [question, isOpen]);
 
   const onClickCreate = () => {
     dispatch({
@@ -105,9 +105,9 @@ export const QuestionDetailModal = (props) => {
   };
 
   const STATUS = [
-    { code: "1", name: "整理中" },
-    { code: "2", name: "質問中" },
-    { code: "3", name: "解決済み" },
+    { code: "1", name: "New" },
+    { code: "2", name: "In Question" },
+    { code: "3", name: "Solved" },
   ];
   const options = STATUS.map((option) => (
     <option key={option.code} value={option.code}>
@@ -123,7 +123,7 @@ export const QuestionDetailModal = (props) => {
       motionPreset="slideInBottom"
     >
       <ModalOverlay />
-      <ModalContent pb={6} h="inherit" w="100%" maxW="" mx={30}>
+      <ModalContent pb={4} h="inherit" w="100%" maxW="" mx={30}>
         <ModalCloseButton />
         <ModalHeader mt={6}>
           <Input

@@ -1,6 +1,7 @@
 import { useDisclosure } from "@chakra-ui/hooks";
-import { WrapItem, Wrap, Box, Text } from "@chakra-ui/layout";
-import { Stack } from "@chakra-ui/react";
+import { AddIcon } from "@chakra-ui/icons";
+import { WrapItem, Wrap, Flex, Box, Text } from "@chakra-ui/layout";
+import { HStack, Stack } from "@chakra-ui/react";
 import { useCallback, useReducer } from "react";
 
 import { QuestionCard } from "../components/organisms/question/QuestionCard";
@@ -93,33 +94,123 @@ const Board = () => {
   return (
     <>
       <HeaderLayout />
-      <Wrap p={{ base: 4, md: 10 }} spacing="30px">
-        <WrapItem>
+      <Flex p={{ base: 4, md: 6 }} overflowX="auto">
+        <Box mr={5}>
           <Box
-            w={{ base: "90vw", md: 250 }}
-            h="60px"
+            w={{ base: "80vw", md: "28vw" }}
+            h="50px"
             bg="white"
             borderRadius="10px"
+            borderTopWidth="3px"
+            borderTopColor="gray.500"
             shadow="md"
-            p={4}
+            p={3}
+            mb={{ base: 4, md: 4 }}
             _hover={{ cursor: "pointer", opacity: 0.8 }}
             onClick={() => onClickCard(0)}
           >
+            <HStack align="center" justify="center">
+              <AddIcon />
+              <Text fontSize="md" color="gray">
+                New
+              </Text>
+            </HStack>
+          </Box>
+          <Wrap
+            // p={{ md: 2 }}
+            flexDirection="column"
+            w={{ base: "auto", md: "30vw" }}
+            h={{ md: "80vh" }}
+            overflowY={{ md: "auto" }}
+            overflowX={{ md: "hidden" }}
+            spacing={{ base: 4, md: "20px" }}
+          >
+            {questions
+              ? questions.map((question) => (
+                  <WrapItem key={question.id}>
+                    <QuestionCard question={question} onClick={onClickCard} />
+                  </WrapItem>
+                ))
+              : null}
+          </Wrap>
+        </Box>
+        <Box mr={5}>
+          <Box
+            w={{ base: "80vw", md: "28vw" }}
+            h="50px"
+            bg="white"
+            borderRadius="10px"
+            borderTopWidth="3px"
+            borderTopColor="blue.500"
+            shadow="md"
+            p={3}
+            mb={{ base: 4, md: 4 }}
+            // _hover={{ cursor: "pointer", opacity: 0.8 }}
+            // onClick={() => onClickCard(0)}
+          >
             <Stack textAlign="center">
               <Text fontSize="md" color="gray">
-                + new question
+                In Question
               </Text>
             </Stack>
           </Box>
-        </WrapItem>
-        {questions
-          ? questions.map((question) => (
-              <WrapItem key={question.id}>
-                <QuestionCard question={question} onClick={onClickCard} />
-              </WrapItem>
-            ))
-          : null}
-      </Wrap>
+          <Wrap
+            // p={{ md: 2 }}
+            flexDirection="column"
+            w={{ base: "auto", md: "30vw" }}
+            h={{ md: "80vh" }}
+            overflowY={{ md: "auto" }}
+            overflowX={{ md: "hidden" }}
+            spacing={{ base: 4, md: "20px" }}
+          >
+            {questions
+              ? questions.map((question) => (
+                  <WrapItem key={question.id}>
+                    <QuestionCard question={question} onClick={onClickCard} />
+                  </WrapItem>
+                ))
+              : null}
+          </Wrap>
+        </Box>
+        <Box mr={5}>
+          <Box
+            w={{ base: "80vw", md: "28vw" }}
+            h="50px"
+            bg="white"
+            borderRadius="10px"
+            borderTopWidth="3px"
+            borderTopColor="green.500"
+            shadow="md"
+            p={3}
+            mb={{ base: 4, md: 4 }}
+            // _hover={{ cursor: "pointer", opacity: 0.8 }}
+            // onClick={() => onClickCard(0)}
+          >
+            <Stack textAlign="center">
+              <Text fontSize="md" color="gray">
+                Solved
+              </Text>
+            </Stack>
+          </Box>
+          <Wrap
+            // p={{ md: 2 }}
+            flexDirection="column"
+            w={{ base: "auto", md: "30vw" }}
+            h={{ md: "80vh" }}
+            overflowY={{ md: "auto" }}
+            overflowX={{ md: "hidden" }}
+            spacing={{ base: 4, md: "20px" }}
+          >
+            {questions
+              ? questions.map((question) => (
+                  <WrapItem key={question.id}>
+                    <QuestionCard question={question} onClick={onClickCard} />
+                  </WrapItem>
+                ))
+              : null}
+          </Wrap>
+        </Box>
+      </Flex>
       <QuestionDetailModal
         question={selectedQuestion}
         isOpen={isOpen}
