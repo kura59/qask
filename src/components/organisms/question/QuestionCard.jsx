@@ -13,7 +13,7 @@ export const QuestionCard = (props) => {
       shadow="md"
       p={4}
       _hover={{ cursor: "pointer", opacity: 0.8 }}
-      onClick={() => onClick(question.id)}
+      onClick={() => onClick(question.id, question.status)}
     >
       <Stack textAlign="center">
         <Text fontSize="md" fontWeight="bold">

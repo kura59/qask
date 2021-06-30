@@ -18,7 +18,8 @@ import DeleteQuestionButton from "../../atoms/button/DeleteQuestionButton";
 import DeleteDialog from "../../molecules/DeleteDialog";
 
 export const QuestionDetailModal = (props) => {
-  const { question, isOpen, onClose, dispatch } = props;
+  const { question, isOpen, onClose, dispatch, dispatchIn, dispatchSolved } =
+    props;
   const [title, setTitle] = useState("");
   const [when, setWhen] = useState("");
   const [where, setWhere] = useState("");
@@ -57,49 +58,305 @@ export const QuestionDetailModal = (props) => {
   }, [question, isOpen]);
 
   const onClickCreate = () => {
-    dispatch({
-      type: "CREATE",
-      title: title,
-      when: when,
-      where: where,
-      who: who,
-      what: what,
-      why: why,
-      how: how,
-      status: status,
-      setTitle: setTitle,
-      setWhen: setWhen,
-      setWhere: setWhere,
-      setWho: setWho,
-      setWhat: setWhat,
-      setWhy: setWhy,
-      setHow: setHow,
-      setStatus: setStatus,
-    });
+    switch (status) {
+      case "1":
+        dispatch({
+          type: "CREATE",
+          title: title,
+          when: when,
+          where: where,
+          who: who,
+          what: what,
+          why: why,
+          how: how,
+          status: status,
+          setTitle: setTitle,
+          setWhen: setWhen,
+          setWhere: setWhere,
+          setWho: setWho,
+          setWhat: setWhat,
+          setWhy: setWhy,
+          setHow: setHow,
+          setStatus: setStatus,
+        });
+        break;
+      case "2":
+        dispatchIn({
+          type: "CREATE",
+          title: title,
+          when: when,
+          where: where,
+          who: who,
+          what: what,
+          why: why,
+          how: how,
+          status: status,
+          setTitle: setTitle,
+          setWhen: setWhen,
+          setWhere: setWhere,
+          setWho: setWho,
+          setWhat: setWhat,
+          setWhy: setWhy,
+          setHow: setHow,
+          setStatus: setStatus,
+        });
+        break;
+      case "3":
+        dispatchSolved({
+          type: "CREATE",
+          title: title,
+          when: when,
+          where: where,
+          who: who,
+          what: what,
+          why: why,
+          how: how,
+          status: status,
+          setTitle: setTitle,
+          setWhen: setWhen,
+          setWhere: setWhere,
+          setWho: setWho,
+          setWhat: setWhat,
+          setWhy: setWhy,
+          setHow: setHow,
+          setStatus: setStatus,
+        });
+        break;
+    }
     onClose();
   };
 
   const onClickUpdate = () => {
-    dispatch({
-      type: "UPDATE",
-      id: question.id,
-      title: title,
-      when: when,
-      where: where,
-      who: who,
-      what: what,
-      why: why,
-      how: how,
-      status: status,
-    });
+    switch (status) {
+      case "1":
+        switch (question.status) {
+          case "1":
+            dispatch({
+              type: "UPDATE",
+              id: question.id,
+              title: title,
+              when: when,
+              where: where,
+              who: who,
+              what: what,
+              why: why,
+              how: how,
+              status: status,
+            });
+            break;
+          case "2":
+            dispatchIn({
+              type: "DELETE",
+              id: question.id,
+            });
+            dispatch({
+              type: "CREATE",
+              title: title,
+              when: when,
+              where: where,
+              who: who,
+              what: what,
+              why: why,
+              how: how,
+              status: status,
+              setTitle: setTitle,
+              setWhen: setWhen,
+              setWhere: setWhere,
+              setWho: setWho,
+              setWhat: setWhat,
+              setWhy: setWhy,
+              setHow: setHow,
+              setStatus: setStatus,
+            });
+            break;
+          case "3":
+            dispatchSolved({
+              type: "DELETE",
+              id: question.id,
+            });
+            dispatch({
+              type: "CREATE",
+              title: title,
+              when: when,
+              where: where,
+              who: who,
+              what: what,
+              why: why,
+              how: how,
+              status: status,
+              setTitle: setTitle,
+              setWhen: setWhen,
+              setWhere: setWhere,
+              setWho: setWho,
+              setWhat: setWhat,
+              setWhy: setWhy,
+              setHow: setHow,
+              setStatus: setStatus,
+            });
+            break;
+        }
+        break;
+      case "2":
+        switch (question.status) {
+          case "2":
+            dispatchIn({
+              type: "UPDATE",
+              id: question.id,
+              title: title,
+              when: when,
+              where: where,
+              who: who,
+              what: what,
+              why: why,
+              how: how,
+              status: status,
+            });
+            break;
+          case "1":
+            dispatch({
+              type: "DELETE",
+              id: question.id,
+            });
+            dispatchIn({
+              type: "CREATE",
+              title: title,
+              when: when,
+              where: where,
+              who: who,
+              what: what,
+              why: why,
+              how: how,
+              status: status,
+              setTitle: setTitle,
+              setWhen: setWhen,
+              setWhere: setWhere,
+              setWho: setWho,
+              setWhat: setWhat,
+              setWhy: setWhy,
+              setHow: setHow,
+              setStatus: setStatus,
+            });
+            break;
+          case "3":
+            dispatchSolved({
+              type: "DELETE",
+              id: question.id,
+            });
+            dispatchIn({
+              type: "CREATE",
+              title: title,
+              when: when,
+              where: where,
+              who: who,
+              what: what,
+              why: why,
+              how: how,
+              status: status,
+              setTitle: setTitle,
+              setWhen: setWhen,
+              setWhere: setWhere,
+              setWho: setWho,
+              setWhat: setWhat,
+              setWhy: setWhy,
+              setHow: setHow,
+              setStatus: setStatus,
+            });
+            break;
+        }
+        break;
+      case "3":
+        switch (question.status) {
+          case "3":
+            dispatchSolved({
+              type: "UPDATE",
+              id: question.id,
+              title: title,
+              when: when,
+              where: where,
+              who: who,
+              what: what,
+              why: why,
+              how: how,
+              status: status,
+            });
+            break;
+          case "1":
+            dispatch({
+              type: "DELETE",
+              id: question.id,
+            });
+            dispatchSolved({
+              type: "CREATE",
+              title: title,
+              when: when,
+              where: where,
+              who: who,
+              what: what,
+              why: why,
+              how: how,
+              status: status,
+              setTitle: setTitle,
+              setWhen: setWhen,
+              setWhere: setWhere,
+              setWho: setWho,
+              setWhat: setWhat,
+              setWhy: setWhy,
+              setHow: setHow,
+              setStatus: setStatus,
+            });
+            break;
+          case "2":
+            dispatchIn({
+              type: "DELETE",
+              id: question.id,
+            });
+            dispatchSolved({
+              type: "CREATE",
+              title: title,
+              when: when,
+              where: where,
+              who: who,
+              what: what,
+              why: why,
+              how: how,
+              status: status,
+              setTitle: setTitle,
+              setWhen: setWhen,
+              setWhere: setWhere,
+              setWho: setWho,
+              setWhat: setWhat,
+              setWhy: setWhy,
+              setHow: setHow,
+              setStatus: setStatus,
+            });
+            break;
+        }
+        break;
+    }
     onClose();
   };
 
   const onClickDelete = () => {
-    dispatch({
-      type: "DELETE",
-      id: question.id,
-    });
+    switch (status) {
+      case "1":
+        dispatch({
+          type: "DELETE",
+          id: question.id,
+        });
+        break;
+      case "2":
+        dispatchIn({
+          type: "DELETE",
+          id: question.id,
+        });
+        break;
+      case "3":
+        dispatchSolved({
+          type: "DELETE",
+          id: question.id,
+        });
+        break;
+    }
     onCloseAlert();
     onClose();
   };

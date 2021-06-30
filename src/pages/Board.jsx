@@ -81,14 +81,29 @@ const Board = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { onSelectQuestion, selectedQuestion } = useSelectQuestion();
   const [questions, dispatch] = useReducer(reducer, null);
+  const [inQuestions, dispatchIn] = useReducer(reducer, null);
+  const [solvedQuestions, dispatchSolved] = useReducer(reducer, null);
   // const { loginUser } = useLoginUser();
   // console.log(loginUser);
 
   const onClickCard = useCallback(
-    (id) => {
-      onSelectQuestion({ id, questions, onOpen });
+    (id, status) => {
+      switch (status) {
+        case "1":
+          onSelectQuestion({ id, questions: questions, onOpen });
+          break;
+        case "2":
+          onSelectQuestion({ id, questions: inQuestions, onOpen });
+          break;
+        case "3":
+          onSelectQuestion({ id, questions: solvedQuestions, onOpen });
+          break;
+        default:
+          onSelectQuestion({ id, questions: questions, onOpen });
+          break;
+      }
     },
-    [questions, onSelectQuestion, onOpen]
+    [questions, inQuestions, solvedQuestions, onSelectQuestion, onOpen]
   );
 
   return (
@@ -107,7 +122,7 @@ const Board = () => {
             p={3}
             mb={{ base: 4, md: 4 }}
             _hover={{ cursor: "pointer", opacity: 0.8 }}
-            onClick={() => onClickCard(0)}
+            onClick={() => onClickCard(0, "")}
           >
             <HStack align="center" justify="center">
               <AddIcon />
@@ -163,8 +178,8 @@ const Board = () => {
             overflowX={{ md: "hidden" }}
             spacing={{ base: 4, md: "20px" }}
           >
-            {questions
-              ? questions.map((question) => (
+            {inQuestions
+              ? inQuestions.map((question) => (
                   <WrapItem key={question.id}>
                     <QuestionCard question={question} onClick={onClickCard} />
                   </WrapItem>
@@ -201,8 +216,8 @@ const Board = () => {
             overflowX={{ md: "hidden" }}
             spacing={{ base: 4, md: "20px" }}
           >
-            {questions
-              ? questions.map((question) => (
+            {solvedQuestions
+              ? solvedQuestions.map((question) => (
                   <WrapItem key={question.id}>
                     <QuestionCard question={question} onClick={onClickCard} />
                   </WrapItem>
@@ -216,6 +231,8 @@ const Board = () => {
         isOpen={isOpen}
         onClose={onClose}
         dispatch={dispatch}
+        dispatchIn={dispatchIn}
+        dispatchSolved={dispatchSolved}
       />
     </>
   );
