@@ -11,11 +11,13 @@ import {
   ModalFooter,
 } from "@chakra-ui/modal";
 import { useDisclosure } from "@chakra-ui/hooks";
-import { Select, Spacer, Textarea } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { Select, Spacer, Textarea, Button } from "@chakra-ui/react";
+import { useCallback, useEffect, useState } from "react";
 import PrimaryButton from "../../atoms/button/PrimaryButton";
 import DeleteQuestionButton from "../../atoms/button/DeleteQuestionButton";
 import DeleteDialog from "../../molecules/DeleteDialog";
+import { TextareaAutosize, ResizeTextarea } from "react-textarea-autosize";
+import TemplateModal from "../../molecules/TemplateModal";
 
 export const QuestionDetailModal = (props) => {
   const { question, isOpen, onClose, dispatch, dispatchIn, dispatchSolved } =
@@ -29,10 +31,18 @@ export const QuestionDetailModal = (props) => {
   const [how, setHow] = useState("");
   const [status, setStatus] = useState("");
 
+  const [isCheck, setIsCheck] = useState(false);
+
   const {
     isOpen: isOpenAlert,
     onOpen: onOpenAlert,
     onClose: onCloseAlert,
+  } = useDisclosure();
+
+  const {
+    isOpen: isOpenTemplate,
+    onOpen: onOpenTemplate,
+    onClose: onCloseTemplate,
   } = useDisclosure();
 
   useEffect(() => {
@@ -361,6 +371,15 @@ export const QuestionDetailModal = (props) => {
     onClose();
   };
 
+  const onClickTemplate = useCallback(() => {
+    if (title === "" || what === "") {
+      setIsCheck(false);
+    } else {
+      setIsCheck(true);
+    }
+    onOpenTemplate();
+  }, [title, what]);
+
   const STATUS = [
     { code: "1", name: "New" },
     { code: "2", name: "In Question" },
@@ -400,29 +419,54 @@ export const QuestionDetailModal = (props) => {
               />
             </FormControl>
             <FormControl>
-              <FormLabel>Where（発生ケース）</FormLabel>
-              <Input value={where} onChange={(e) => setWhere(e.target.value)} />
-            </FormControl>
-            <FormControl>
               <FormLabel>Who（担当者）</FormLabel>
               <Input value={who} onChange={(e) => setWho(e.target.value)} />
             </FormControl>
             <FormControl>
+              <FormLabel>Where（発生ケース）</FormLabel>
+              <Textarea
+                // minRows={3}
+                value={where}
+                onChange={(e) => setWhere(e.target.value)}
+              />
+            </FormControl>
+            <FormControl>
               <FormLabel>What（問題概要）</FormLabel>
               <Textarea
+                // minRows={3}
                 value={what}
                 onChange={(e) => setWhat(e.target.value)}
+                // overflow="hidden"
+                // resize="none"
+                // as={ResizeTextarea}
               />
             </FormControl>
             <FormControl>
               <FormLabel>Why（発生原因）</FormLabel>
-              <Textarea value={why} onChange={(e) => setWhy(e.target.value)} />
+              <Textarea
+                // minRows={3}
+                value={why}
+                onChange={(e) => setWhy(e.target.value)}
+                // overflow="hidden"
+                // resize="none"
+                // as={ResizeTextarea}
+              />
             </FormControl>
             <FormControl>
               <FormLabel>How（解決策）</FormLabel>
-              <Textarea value={how} onChange={(e) => setHow(e.target.value)} />
+              <Textarea
+                // minRows={3}
+                value={how}
+                onChange={(e) => setHow(e.target.value)}
+                // overflow="hidden"
+                // resize="none"
+                // as={ResizeTextarea}
+              />
             </FormControl>
           </Stack>
+          <Button my={4} onClick={onClickTemplate}>
+            質問テンプレート作成
+          </Button>
         </ModalBody>
         <ModalFooter>
           {question ? <DeleteQuestionButton onClick={onOpenAlert} /> : null}
@@ -447,6 +491,16 @@ export const QuestionDetailModal = (props) => {
         isOpenAlert={isOpenAlert}
         onCloseAlert={onCloseAlert}
         onClickDelete={onClickDelete}
+      />
+      <TemplateModal
+        isOpenTemplate={isOpenTemplate}
+        onCloseTemplate={onCloseTemplate}
+        title={title}
+        where={where}
+        what={what}
+        why={why}
+        how={how}
+        isCheck={isCheck}
       />
     </Modal>
   );
