@@ -13,11 +13,12 @@ import {
 import { useDisclosure } from "@chakra-ui/hooks";
 import { Select, Spacer, Textarea, Button } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
+import TextareaAutosize from "react-textarea-autosize";
 import PrimaryButton from "../../atoms/button/PrimaryButton";
 import DeleteQuestionButton from "../../atoms/button/DeleteQuestionButton";
 import DeleteDialog from "../../molecules/DeleteDialog";
-import { TextareaAutosize, ResizeTextarea } from "react-textarea-autosize";
 import TemplateModal from "../../molecules/TemplateModal";
+import { useMessage } from "../../../hooks/useMessage";
 
 export const QuestionDetailModal = (props) => {
   const { question, isOpen, onClose, dispatch, dispatchIn, dispatchSolved } =
@@ -31,8 +32,6 @@ export const QuestionDetailModal = (props) => {
   const [how, setHow] = useState("");
   const [status, setStatus] = useState("");
 
-  const [isCheck, setIsCheck] = useState(false);
-
   const {
     isOpen: isOpenAlert,
     onOpen: onOpenAlert,
@@ -44,6 +43,8 @@ export const QuestionDetailModal = (props) => {
     onOpen: onOpenTemplate,
     onClose: onCloseTemplate,
   } = useDisclosure();
+
+  const { showMessage } = useMessage();
 
   useEffect(() => {
     if (question) {
@@ -373,11 +374,13 @@ export const QuestionDetailModal = (props) => {
 
   const onClickTemplate = useCallback(() => {
     if (title === "" || what === "") {
-      setIsCheck(false);
+      showMessage({
+        title: "タイトル・What（問題概要）を入力してください。",
+        status: "error",
+      });
     } else {
-      setIsCheck(true);
+      onOpenTemplate();
     }
-    onOpenTemplate();
   }, [title, what]);
 
   const STATUS = [
@@ -399,7 +402,7 @@ export const QuestionDetailModal = (props) => {
       motionPreset="slideInBottom"
     >
       <ModalOverlay />
-      <ModalContent pb={4} h="inherit" w="100%" maxW="" mx={30}>
+      <ModalContent pb={4} h="inherit" w="100%" maxW="" mx={30} mt={10}>
         <ModalCloseButton />
         <ModalHeader mt={6}>
           <Input
@@ -500,7 +503,6 @@ export const QuestionDetailModal = (props) => {
         what={what}
         why={why}
         how={how}
-        isCheck={isCheck}
       />
     </Modal>
   );
