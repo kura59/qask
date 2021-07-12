@@ -13,7 +13,6 @@ import {
 import { useDisclosure } from "@chakra-ui/hooks";
 import { Select, Spacer, Textarea, Button } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
-import TextareaAutosize from "react-textarea-autosize";
 import PrimaryButton from "../../atoms/button/PrimaryButton";
 import DeleteQuestionButton from "../../atoms/button/DeleteQuestionButton";
 import DeleteDialog from "../../molecules/DeleteDialog";
@@ -31,6 +30,10 @@ export const QuestionDetailModal = (props) => {
   const [why, setWhy] = useState("");
   const [how, setHow] = useState("");
   const [status, setStatus] = useState("");
+  const [rowsWhere, setRowsWhere] = useState();
+  const [rowsWhat, setRowsWhat] = useState();
+  const [rowsWhy, setRowsWhy] = useState();
+  const [rowsHow, setRowsHow] = useState();
 
   const {
     isOpen: isOpenAlert,
@@ -56,6 +59,26 @@ export const QuestionDetailModal = (props) => {
       setWhy(question.why);
       setHow(question.how);
       setStatus(question.status);
+      setRowsWhere(
+        question.where.split("\n").length > 3
+          ? question.where.split("\n").length
+          : 3
+      );
+      setRowsWhat(
+        question.what.split("\n").length > 3
+          ? question.what.split("\n").length
+          : 3
+      );
+      setRowsWhy(
+        question.why.split("\n").length > 3
+          ? question.why.split("\n").length
+          : 3
+      );
+      setRowsHow(
+        question.how.split("\n").length > 3
+          ? question.how.split("\n").length
+          : 3
+      );
     } else {
       setTitle("");
       setWhen("");
@@ -65,8 +88,34 @@ export const QuestionDetailModal = (props) => {
       setWhy("");
       setHow("");
       setStatus("1");
+      setRowsWhere(3);
+      setRowsWhat(3);
+      setRowsWhy(3);
+      setRowsHow(3);
     }
   }, [question, isOpen]);
+
+  const onChangeRows = (val, type) => {
+    const valLength = val.split("\n").length;
+    switch (type) {
+      case "where":
+        setWhere(val);
+        valLength > 3 ? setRowsWhere(valLength) : setRowsWhere(3);
+        break;
+      case "what":
+        setWhat(val);
+        valLength > 3 ? setRowsWhat(valLength) : setRowsWhat(3);
+        break;
+      case "why":
+        setWhy(val);
+        valLength > 3 ? setRowsWhy(valLength) : setRowsWhy(3);
+        break;
+      case "how":
+        setHow(val);
+        valLength > 3 ? setRowsHow(valLength) : setRowsHow(3);
+        break;
+    }
+  };
 
   const onClickCreate = () => {
     switch (status) {
@@ -428,42 +477,41 @@ export const QuestionDetailModal = (props) => {
             <FormControl>
               <FormLabel>Where（発生ケース）</FormLabel>
               <Textarea
-                // minRows={3}
                 value={where}
-                onChange={(e) => setWhere(e.target.value)}
+                onChange={(e) => onChangeRows(e.target.value, "where")}
+                overflow="hidden"
+                resize="none"
+                rows={rowsWhere}
               />
             </FormControl>
             <FormControl>
               <FormLabel>What（問題概要）</FormLabel>
               <Textarea
-                // minRows={3}
                 value={what}
-                onChange={(e) => setWhat(e.target.value)}
-                // overflow="hidden"
-                // resize="none"
-                // as={ResizeTextarea}
+                onChange={(e) => onChangeRows(e.target.value, "what")}
+                overflow="hidden"
+                resize="none"
+                rows={rowsWhat}
               />
             </FormControl>
             <FormControl>
               <FormLabel>Why（発生原因）</FormLabel>
               <Textarea
-                // minRows={3}
                 value={why}
-                onChange={(e) => setWhy(e.target.value)}
-                // overflow="hidden"
-                // resize="none"
-                // as={ResizeTextarea}
+                onChange={(e) => onChangeRows(e.target.value, "why")}
+                overflow="hidden"
+                resize="none"
+                rows={rowsWhy}
               />
             </FormControl>
             <FormControl>
               <FormLabel>How（解決策）</FormLabel>
               <Textarea
-                // minRows={3}
                 value={how}
-                onChange={(e) => setHow(e.target.value)}
-                // overflow="hidden"
-                // resize="none"
-                // as={ResizeTextarea}
+                onChange={(e) => onChangeRows(e.target.value, "how")}
+                overflow="hidden"
+                resize="none"
+                rows={rowsHow}
               />
             </FormControl>
           </Stack>
