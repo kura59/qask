@@ -7,12 +7,25 @@ import {
   ModalCloseButton,
   Divider,
   Textarea,
+  Flex,
+  Spacer,
+  Text,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
+import { CopyToClipboard } from "react-copy-to-clipboard";
+import CopyTemplateButton from "../atoms/button/CopyTemplateButton";
 
 const TemplateModal = (props) => {
-  const { isOpenTemplate, onCloseTemplate, title, where, what, why, how } =
-    props;
+  const {
+    isOpenTemplate,
+    onCloseTemplate,
+    showMessage,
+    title,
+    where,
+    what,
+    why,
+    how,
+  } = props;
   const [questionText, setQuestionText] = useState("");
   const [rowsText, setRowsText] = useState();
 
@@ -30,6 +43,13 @@ ${
     setRowsText(template.split("\n").length);
   }, [isOpenTemplate]);
 
+  const onCopyTemplate = () => {
+    showMessage({
+      title: "テキストがコピーされました！",
+      status: "success",
+    });
+  };
+
   return (
     <Modal isOpen={isOpenTemplate} onClose={onCloseTemplate}>
       <ModalOverlay />
@@ -38,6 +58,15 @@ ${
         <ModalCloseButton />
         <Divider />
         <ModalBody pt={4}>
+          <Flex mb={3} mr={2}>
+            <Spacer />
+            <Text color="gray.300" pr={2}>
+              copy
+            </Text>
+            <CopyToClipboard text={questionText} onCopy={onCopyTemplate}>
+              <CopyTemplateButton />
+            </CopyToClipboard>
+          </Flex>
           <Textarea
             overflow="hidden"
             resize="none"

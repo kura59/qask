@@ -546,6 +546,7 @@ export const QuestionDetailModal = (props) => {
       <TemplateModal
         isOpenTemplate={isOpenTemplate}
         onCloseTemplate={onCloseTemplate}
+        showMessage={showMessage}
         title={title}
         where={where}
         what={what}
