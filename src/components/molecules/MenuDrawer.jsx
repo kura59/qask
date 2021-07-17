@@ -13,6 +13,7 @@ const MenuDrawer = (props) => {
     onClickTop,
     onClickBoard: onClickBoard,
     onClickSetting,
+    onClickLogout,
   } = props;
   return (
     <Drawer placement="left" size="xs" onClose={onClose} isOpen={isOpen}>
@@ -27,6 +28,9 @@ const MenuDrawer = (props) => {
             </Button>
             <Button w="100%" onClick={onClickSetting}>
               設定
+            </Button>
+            <Button w="100%" onClick={onClickLogout}>
+              Sign out
             </Button>
           </DrawerBody>
         </DrawerContent>

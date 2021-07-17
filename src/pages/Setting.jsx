@@ -1,10 +1,11 @@
-import { HeaderLayout } from "../components/templates/HeaderLayout";
+import { LayoutWrapper } from "../components/templates/LayoutWrapper";
 
 const Setting = () => {
   return (
     <>
-      <HeaderLayout />
-      <p>設定ページです</p>
+      <LayoutWrapper>
+        <p>設定ページです</p>
+      </LayoutWrapper>
     </>
   );
 };

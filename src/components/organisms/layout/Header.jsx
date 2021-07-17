@@ -4,6 +4,8 @@ import Link from "next/link";
 import MenuIconButton from "../../atoms/button/MenuIconButton";
 import MenuDrawer from "../../molecules/MenuDrawer";
 import { useRouter } from "next/router";
+import LogoutIconButton from "../../atoms/button/LogoutIconButton";
+import { client } from "../../../libs/supabase";
 
 const NAV_ITEMS = [
   { href: "/Board", label: "ボード" },
@@ -24,6 +26,11 @@ export const Header = () => {
   const onClickSetting = (e) => {
     e.preventDefault();
     router.push("/Setting");
+  };
+  const onClickLogout = (e) => {
+    e.preventDefault();
+    client.auth.signOut();
+    router.push("/");
   };
   return (
     <>
@@ -64,6 +71,7 @@ export const Header = () => {
             );
           })}
         </Flex>
+        <LogoutIconButton onClickLogout={onClickLogout} />
         <MenuIconButton onOpen={onOpen} />
       </Flex>
       <MenuDrawer
@@ -72,6 +80,7 @@ export const Header = () => {
         onClickTop={onClickTop}
         onClickBoard={onClickBoard}
         onClickSetting={onClickSetting}
+        onClickLogout={onClickLogout}
       />
     </>
   );
