@@ -18,6 +18,7 @@ import DeleteQuestionButton from "../../atoms/button/DeleteQuestionButton";
 import DeleteDialog from "../../molecules/DeleteDialog";
 import TemplateModal from "../../molecules/TemplateModal";
 import { useMessage } from "../../../hooks/useMessage";
+// import { Auth } from "@supabase/ui";
 
 export const QuestionDetailModal = (props) => {
   const { question, isOpen, onClose, dispatch, dispatchIn, dispatchSolved } =
@@ -48,6 +49,8 @@ export const QuestionDetailModal = (props) => {
   } = useDisclosure();
 
   const { showMessage } = useMessage();
+
+  // const { user } = Auth.useUser();
 
   useEffect(() => {
     if (question) {
@@ -117,11 +120,13 @@ export const QuestionDetailModal = (props) => {
     }
   };
 
-  const onClickCreate = () => {
+  const onClickCreate = useCallback(() => {
     switch (status) {
       case "1":
         dispatch({
           type: "CREATE",
+          // qType: "new",
+          // userId: user.id,
           title: title,
           when: when,
           where: where,
@@ -143,6 +148,8 @@ export const QuestionDetailModal = (props) => {
       case "2":
         dispatchIn({
           type: "CREATE",
+          // qType: "in",
+          // userId: user.id,
           title: title,
           when: when,
           where: where,
@@ -164,6 +171,8 @@ export const QuestionDetailModal = (props) => {
       case "3":
         dispatchSolved({
           type: "CREATE",
+          // qType: "solved",
+          // userId: user.id,
           title: title,
           when: when,
           where: where,
@@ -184,15 +193,17 @@ export const QuestionDetailModal = (props) => {
         break;
     }
     onClose();
-  };
+  }, [question, title, when, where, who, what, why, how, status, isOpen]);
 
-  const onClickUpdate = () => {
+  const onClickUpdate = useCallback(() => {
     switch (status) {
       case "1":
         switch (question.status) {
           case "1":
             dispatch({
               type: "UPDATE",
+              // qType: "new",
+              // userId: user.id,
               id: question.id,
               title: title,
               when: when,
@@ -207,10 +218,14 @@ export const QuestionDetailModal = (props) => {
           case "2":
             dispatchIn({
               type: "DELETE",
+              // qType: "in",
+              // userId: user.id,
               id: question.id,
             });
             dispatch({
               type: "CREATE",
+              // qType: "new",
+              // userId: user.id,
               title: title,
               when: when,
               where: where,
@@ -232,10 +247,14 @@ export const QuestionDetailModal = (props) => {
           case "3":
             dispatchSolved({
               type: "DELETE",
+              // qType: "solved",
+              // userId: user.id,
               id: question.id,
             });
             dispatch({
               type: "CREATE",
+              // qType: "new",
+              // userId: user.id,
               title: title,
               when: when,
               where: where,
@@ -261,6 +280,8 @@ export const QuestionDetailModal = (props) => {
           case "2":
             dispatchIn({
               type: "UPDATE",
+              // qType: "in",
+              // userId: user.id,
               id: question.id,
               title: title,
               when: when,
@@ -275,10 +296,14 @@ export const QuestionDetailModal = (props) => {
           case "1":
             dispatch({
               type: "DELETE",
+              // qType: "new",
+              // userId: user.id,
               id: question.id,
             });
             dispatchIn({
               type: "CREATE",
+              // qType: "in",
+              // userId: user.id,
               title: title,
               when: when,
               where: where,
@@ -300,10 +325,14 @@ export const QuestionDetailModal = (props) => {
           case "3":
             dispatchSolved({
               type: "DELETE",
+              // qType: "solved",
+              // userId: user.id,
               id: question.id,
             });
             dispatchIn({
               type: "CREATE",
+              // qType: "in",
+              // userId: user.id,
               title: title,
               when: when,
               where: where,
@@ -329,6 +358,8 @@ export const QuestionDetailModal = (props) => {
           case "3":
             dispatchSolved({
               type: "UPDATE",
+              // qType: "solved",
+              // userId: user.id,
               id: question.id,
               title: title,
               when: when,
@@ -343,10 +374,14 @@ export const QuestionDetailModal = (props) => {
           case "1":
             dispatch({
               type: "DELETE",
+              // qType: "new",
+              // userId: user.id,
               id: question.id,
             });
             dispatchSolved({
               type: "CREATE",
+              // qType: "solved",
+              // userId: user.id,
               title: title,
               when: when,
               where: where,
@@ -368,10 +403,14 @@ export const QuestionDetailModal = (props) => {
           case "2":
             dispatchIn({
               type: "DELETE",
+              // qType: "in",
+              // userId: user.id,
               id: question.id,
             });
             dispatchSolved({
               type: "CREATE",
+              // qType: "solved",
+              // userId: user.id,
               title: title,
               when: when,
               where: where,
@@ -394,25 +433,31 @@ export const QuestionDetailModal = (props) => {
         break;
     }
     onClose();
-  };
+  }, [question, title, when, where, who, what, why, how, status, isOpen]);
 
   const onClickDelete = () => {
     switch (status) {
       case "1":
         dispatch({
           type: "DELETE",
+          // qType: "new",
+          // userId: user.id,
           id: question.id,
         });
         break;
       case "2":
         dispatchIn({
           type: "DELETE",
+          // qType: "in",
+          // userId: user.id,
           id: question.id,
         });
         break;
       case "3":
         dispatchSolved({
           type: "DELETE",
+          // qType: "solved",
+          // userId: user.id,
           id: question.id,
         });
         break;

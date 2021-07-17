@@ -2,17 +2,20 @@ import { useDisclosure } from "@chakra-ui/hooks";
 import { AddIcon } from "@chakra-ui/icons";
 import { WrapItem, Wrap, Flex, Box, Text } from "@chakra-ui/layout";
 import { HStack, Stack } from "@chakra-ui/react";
-import { useCallback, useReducer } from "react";
+// import { Auth } from "@supabase/ui";
+import { useCallback, useEffect, useReducer } from "react";
 
 import { QuestionCard } from "../components/organisms/question/QuestionCard";
 import { QuestionDetailModal } from "../components/organisms/question/QuestionDetailModal";
-import { HeaderLayout } from "../components/templates/HeaderLayout";
-// import { useLoginUser } from "../hooks/useLoginUser";
+import { LayoutWrapper } from "../components/templates/LayoutWrapper";
 import { useSelectQuestion } from "../hooks/useSelectQuestion";
+// import { client } from "../libs/supabase";
 
 // stateとactionを受け取り、actionのtypeによってstateの更新方法を変える
 const reducer = (state, action) => {
   switch (action.type) {
+    // case "SELECT":
+    //   return action.data;
     case "CREATE":
       action.setTitle("");
       action.setWhen("");
@@ -23,7 +26,7 @@ const reducer = (state, action) => {
       action.setHow("");
       action.setStatus("1");
       if (state) {
-        return [
+        const state_add = [
           ...state,
           {
             id: state.slice(-1)[0].id + 1,
@@ -37,8 +40,31 @@ const reducer = (state, action) => {
             status: action.status,
           },
         ];
+        // switch (action.qType) {
+        //   case "new":
+        //     await client
+        //       .from("question_new")
+        //       .update({ questions: state_add })
+        //       .match({ user_id: action.userId });
+        //     break;
+        //   case "in":
+        //     await client
+        //       .from("question_in")
+        //       .update({ questions: state_add })
+        //       .match({ user_id: action.userId });
+        //     break;
+        //   case "new":
+        //     await client
+        //       .from("question_solved")
+        //       .update({ questions: state_add })
+        //       .match({ user_id: action.userId });
+        //     break;
+        //   default:
+        //     break;
+        // }
+        return state_add;
       } else {
-        return [
+        const state_new = [
           {
             id: 1,
             title: action.title,
@@ -51,6 +77,26 @@ const reducer = (state, action) => {
             status: action.status,
           },
         ];
+        // switch (action.qType) {
+        //   case "new":
+        //     await client
+        //       .from("question_new")
+        //       .insert({ user_id: action.userId, questions: state_new });
+        //     break;
+        //   case "in":
+        //     await client
+        //       .from("question_in")
+        //       .insert({ user_id: action.userId, questions: state_new });
+        //     break;
+        //   case "new":
+        //     await client
+        //       .from("question_solved")
+        //       .insert({ user_id: action.userId, questions: state_new });
+        //     break;
+        //   default:
+        //     break;
+        // }
+        return state_new;
       }
     case "UPDATE":
       const state_copy = state.slice();
@@ -66,9 +112,53 @@ const reducer = (state, action) => {
           q.status = action.status;
         }
       });
+      // switch (action.qType) {
+      //   case "new":
+      //     await client
+      //       .from("question_new")
+      //       .update({ questions: state_copy })
+      //       .match({ user_id: action.userId });
+      //     break;
+      //   case "in":
+      //     await client
+      //       .from("question_in")
+      //       .update({ questions: state_copy })
+      //       .match({ user_id: action.userId });
+      //     break;
+      //   case "new":
+      //     await client
+      //       .from("question_solved")
+      //       .update({ questions: state_copy })
+      //       .match({ user_id: action.userId });
+      //     break;
+      //   default:
+      //     break;
+      // }
       return state_copy;
     case "DELETE":
       const newState = state.filter((q) => q.id !== action.id);
+      // switch (action.qType) {
+      //   case "new":
+      //     await client
+      //       .from("question_new")
+      //       .update({ questions: newState })
+      //       .match({ user_id: action.userId });
+      //     break;
+      //   case "in":
+      //     await client
+      //       .from("question_in")
+      //       .update({ questions: newState })
+      //       .match({ user_id: action.userId });
+      //     break;
+      //   case "new":
+      //     await client
+      //       .from("question_solved")
+      //       .update({ questions: newState })
+      //       .match({ user_id: action.userId });
+      //     break;
+      //   default:
+      //     break;
+      // }
       if (newState.length !== 0) {
         return newState;
       } else {
@@ -80,11 +170,42 @@ const reducer = (state, action) => {
 const Board = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { onSelectQuestion, selectedQuestion } = useSelectQuestion();
+
   const [questions, dispatch] = useReducer(reducer, null);
   const [inQuestions, dispatchIn] = useReducer(reducer, null);
   const [solvedQuestions, dispatchSolved] = useReducer(reducer, null);
-  // const { loginUser } = useLoginUser();
-  // console.log(loginUser);
+
+  // const fetchQuestionsNew = useCallback(async () => {
+  //   const { dataQuestionsNew, error } = await client
+  //     .from("question_new")
+  //     .select("questions");
+  //   console.log(dataQuestionsNew);
+  //   if (!error && dataQuestionsNew) {
+  //     dispatch({ type: "SELECT", data: dataQuestionsNew });
+  //   }
+  // }, []);
+  // const fetchQuestionsIn = useCallback(async () => {
+  //   const { dataQuestionsIn, error } = await client
+  //     .from("question_in")
+  //     .select("questions");
+  //   if (!error && dataQuestionsIn) {
+  //     dispatch({ type: "SELECT", data: dataQuestionsIn });
+  //   }
+  // }, []);
+  // const fetchQuestionsSolved = useCallback(async () => {
+  //   const { dataQuestionsSolved, error } = await client
+  //     .from("question_solved")
+  //     .select("questions");
+  //   if (!error && dataQuestionsSolved) {
+  //     dispatch({ type: "SELECT", data: dataQuestionsSolved });
+  //   }
+  // }, []);
+
+  // useEffect(() => {
+  //   fetchQuestionsNew();
+  //   fetchQuestionsIn();
+  //   fetchQuestionsSolved();
+  // }, [fetchQuestionsNew, fetchQuestionsIn, fetchQuestionsSolved]);
 
   const onClickCard = useCallback(
     (id, status) => {
@@ -108,132 +229,133 @@ const Board = () => {
 
   return (
     <>
-      <HeaderLayout />
-      <Flex p={{ base: 4, md: 6 }} overflowX="auto">
-        <Box mr={5}>
-          <Box
-            w={{ base: "80vw", md: "28vw" }}
-            h="50px"
-            bg="white"
-            borderRadius="10px"
-            borderTopWidth="3px"
-            borderTopColor="gray.500"
-            shadow="md"
-            p={3}
-            mb={{ base: 4, md: 4 }}
-            _hover={{ cursor: "pointer", opacity: 0.8 }}
-            onClick={() => onClickCard(0, "")}
-          >
-            <HStack align="center" justify="center">
-              <AddIcon />
-              <Text fontSize="md" color="gray">
-                New
-              </Text>
-            </HStack>
+      <LayoutWrapper>
+        <Flex p={{ base: 4, md: 6 }} overflowX="auto">
+          <Box mr={5}>
+            <Box
+              w={{ base: "80vw", md: "28vw" }}
+              h="50px"
+              bg="white"
+              borderRadius="10px"
+              borderTopWidth="3px"
+              borderTopColor="gray.500"
+              shadow="md"
+              p={3}
+              mb={{ base: 4, md: 4 }}
+              _hover={{ cursor: "pointer", opacity: 0.8 }}
+              onClick={() => onClickCard(0, "")}
+            >
+              <HStack align="center" justify="center">
+                <AddIcon />
+                <Text fontSize="md" color="gray">
+                  New
+                </Text>
+              </HStack>
+            </Box>
+            <Wrap
+              // p={{ md: 2 }}
+              flexDirection="column"
+              w={{ base: "auto", md: "30vw" }}
+              h={{ md: "80vh" }}
+              overflowY={{ md: "auto" }}
+              overflowX={{ md: "hidden" }}
+              spacing={{ base: 4, md: "20px" }}
+            >
+              {questions
+                ? questions.map((question) => (
+                    <WrapItem key={question.id}>
+                      <QuestionCard question={question} onClick={onClickCard} />
+                    </WrapItem>
+                  ))
+                : null}
+            </Wrap>
           </Box>
-          <Wrap
-            // p={{ md: 2 }}
-            flexDirection="column"
-            w={{ base: "auto", md: "30vw" }}
-            h={{ md: "80vh" }}
-            overflowY={{ md: "auto" }}
-            overflowX={{ md: "hidden" }}
-            spacing={{ base: 4, md: "20px" }}
-          >
-            {questions
-              ? questions.map((question) => (
-                  <WrapItem key={question.id}>
-                    <QuestionCard question={question} onClick={onClickCard} />
-                  </WrapItem>
-                ))
-              : null}
-          </Wrap>
-        </Box>
-        <Box mr={5}>
-          <Box
-            w={{ base: "80vw", md: "28vw" }}
-            h="50px"
-            bg="white"
-            borderRadius="10px"
-            borderTopWidth="3px"
-            borderTopColor="blue.500"
-            shadow="md"
-            p={3}
-            mb={{ base: 4, md: 4 }}
-            // _hover={{ cursor: "pointer", opacity: 0.8 }}
-            // onClick={() => onClickCard(0)}
-          >
-            <Stack textAlign="center">
-              <Text fontSize="md" color="gray">
-                In Question
-              </Text>
-            </Stack>
+          <Box mr={5}>
+            <Box
+              w={{ base: "80vw", md: "28vw" }}
+              h="50px"
+              bg="white"
+              borderRadius="10px"
+              borderTopWidth="3px"
+              borderTopColor="blue.500"
+              shadow="md"
+              p={3}
+              mb={{ base: 4, md: 4 }}
+              // _hover={{ cursor: "pointer", opacity: 0.8 }}
+              // onClick={() => onClickCard(0)}
+            >
+              <Stack textAlign="center">
+                <Text fontSize="md" color="gray">
+                  In Question
+                </Text>
+              </Stack>
+            </Box>
+            <Wrap
+              // p={{ md: 2 }}
+              flexDirection="column"
+              w={{ base: "auto", md: "30vw" }}
+              h={{ md: "80vh" }}
+              overflowY={{ md: "auto" }}
+              overflowX={{ md: "hidden" }}
+              spacing={{ base: 4, md: "20px" }}
+            >
+              {inQuestions
+                ? inQuestions.map((question) => (
+                    <WrapItem key={question.id}>
+                      <QuestionCard question={question} onClick={onClickCard} />
+                    </WrapItem>
+                  ))
+                : null}
+            </Wrap>
           </Box>
-          <Wrap
-            // p={{ md: 2 }}
-            flexDirection="column"
-            w={{ base: "auto", md: "30vw" }}
-            h={{ md: "80vh" }}
-            overflowY={{ md: "auto" }}
-            overflowX={{ md: "hidden" }}
-            spacing={{ base: 4, md: "20px" }}
-          >
-            {inQuestions
-              ? inQuestions.map((question) => (
-                  <WrapItem key={question.id}>
-                    <QuestionCard question={question} onClick={onClickCard} />
-                  </WrapItem>
-                ))
-              : null}
-          </Wrap>
-        </Box>
-        <Box mr={5}>
-          <Box
-            w={{ base: "80vw", md: "28vw" }}
-            h="50px"
-            bg="white"
-            borderRadius="10px"
-            borderTopWidth="3px"
-            borderTopColor="green.500"
-            shadow="md"
-            p={3}
-            mb={{ base: 4, md: 4 }}
-            // _hover={{ cursor: "pointer", opacity: 0.8 }}
-            // onClick={() => onClickCard(0)}
-          >
-            <Stack textAlign="center">
-              <Text fontSize="md" color="gray">
-                Solved
-              </Text>
-            </Stack>
+          <Box mr={5}>
+            <Box
+              w={{ base: "80vw", md: "28vw" }}
+              h="50px"
+              bg="white"
+              borderRadius="10px"
+              borderTopWidth="3px"
+              borderTopColor="green.500"
+              shadow="md"
+              p={3}
+              mb={{ base: 4, md: 4 }}
+              // _hover={{ cursor: "pointer", opacity: 0.8 }}
+              // onClick={() => onClickCard(0)}
+            >
+              <Stack textAlign="center">
+                <Text fontSize="md" color="gray">
+                  Solved
+                </Text>
+              </Stack>
+            </Box>
+            <Wrap
+              // p={{ md: 2 }}
+              flexDirection="column"
+              w={{ base: "auto", md: "30vw" }}
+              h={{ md: "80vh" }}
+              overflowY={{ md: "auto" }}
+              overflowX={{ md: "hidden" }}
+              spacing={{ base: 4, md: "20px" }}
+            >
+              {solvedQuestions
+                ? solvedQuestions.map((question) => (
+                    <WrapItem key={question.id}>
+                      <QuestionCard question={question} onClick={onClickCard} />
+                    </WrapItem>
+                  ))
+                : null}
+            </Wrap>
           </Box>
-          <Wrap
-            // p={{ md: 2 }}
-            flexDirection="column"
-            w={{ base: "auto", md: "30vw" }}
-            h={{ md: "80vh" }}
-            overflowY={{ md: "auto" }}
-            overflowX={{ md: "hidden" }}
-            spacing={{ base: 4, md: "20px" }}
-          >
-            {solvedQuestions
-              ? solvedQuestions.map((question) => (
-                  <WrapItem key={question.id}>
-                    <QuestionCard question={question} onClick={onClickCard} />
-                  </WrapItem>
-                ))
-              : null}
-          </Wrap>
-        </Box>
-      </Flex>
-      <QuestionDetailModal
-        question={selectedQuestion}
-        isOpen={isOpen}
-        onClose={onClose}
-        dispatch={dispatch}
-        dispatchIn={dispatchIn}
-        dispatchSolved={dispatchSolved}
-      />
+        </Flex>
+        <QuestionDetailModal
+          question={selectedQuestion}
+          isOpen={isOpen}
+          onClose={onClose}
+          dispatch={dispatch}
+          dispatchIn={dispatchIn}
+          dispatchSolved={dispatchSolved}
+        />
+      </LayoutWrapper>
     </>
   );
 };
