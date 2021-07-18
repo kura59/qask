@@ -9,8 +9,9 @@ const CopyTemplateButton = (props) => {
       aria-label="コピーボタン"
       icon={<CopyIcon />}
       size={{ base: "md", md: "lg" }}
-      color="gray.400"
+      color="gray.500"
       variant="unstyled"
+      _hover={{ cursor: "pointer", opacity: 0.6 }}
       onClick={onClick}
     />
   );

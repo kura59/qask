@@ -75,7 +75,8 @@ export const QuestionDetailModal = (props) => {
     question,
     onClose,
     isOpen,
-    onCloseAlert
+    onCloseAlert,
+    showMessage
   );
 
   // const { user } = Auth.useUser();

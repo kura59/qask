@@ -8,7 +8,8 @@ export const useCRUDQuestion = (
   question,
   onClose,
   isOpen,
-  onCloseAlert
+  onCloseAlert,
+  showMessage
 ) => {
   const [title, setTitle] = useState("");
   const [when, setWhen] = useState("");
@@ -46,318 +47,332 @@ export const useCRUDQuestion = (
   };
 
   const onClickCreate = useCallback(() => {
-    switch (status) {
-      case "1":
-        dispatch({
-          type: "CREATE",
-          // qType: "new",
-          // userId: user.id,
-          title: title,
-          when: when,
-          where: where,
-          who: who,
-          what: what,
-          why: why,
-          how: how,
-          status: status,
-          setTitle: setTitle,
-          setWhen: setWhen,
-          setWhere: setWhere,
-          setWho: setWho,
-          setWhat: setWhat,
-          setWhy: setWhy,
-          setHow: setHow,
-          setStatus: setStatus,
-        });
-        break;
-      case "2":
-        dispatchIn({
-          type: "CREATE",
-          // qType: "in",
-          // userId: user.id,
-          title: title,
-          when: when,
-          where: where,
-          who: who,
-          what: what,
-          why: why,
-          how: how,
-          status: status,
-          setTitle: setTitle,
-          setWhen: setWhen,
-          setWhere: setWhere,
-          setWho: setWho,
-          setWhat: setWhat,
-          setWhy: setWhy,
-          setHow: setHow,
-          setStatus: setStatus,
-        });
-        break;
-      case "3":
-        dispatchSolved({
-          type: "CREATE",
-          // qType: "solved",
-          // userId: user.id,
-          title: title,
-          when: when,
-          where: where,
-          who: who,
-          what: what,
-          why: why,
-          how: how,
-          status: status,
-          setTitle: setTitle,
-          setWhen: setWhen,
-          setWhere: setWhere,
-          setWho: setWho,
-          setWhat: setWhat,
-          setWhy: setWhy,
-          setHow: setHow,
-          setStatus: setStatus,
-        });
-        break;
+    if (title === "") {
+      showMessage({
+        title: "タイトルを入力してください。",
+        status: "error",
+      });
+    } else {
+      switch (status) {
+        case "1":
+          dispatch({
+            type: "CREATE",
+            // qType: "new",
+            // userId: user.id,
+            title: title,
+            when: when,
+            where: where,
+            who: who,
+            what: what,
+            why: why,
+            how: how,
+            status: status,
+            setTitle: setTitle,
+            setWhen: setWhen,
+            setWhere: setWhere,
+            setWho: setWho,
+            setWhat: setWhat,
+            setWhy: setWhy,
+            setHow: setHow,
+            setStatus: setStatus,
+          });
+          break;
+        case "2":
+          dispatchIn({
+            type: "CREATE",
+            // qType: "in",
+            // userId: user.id,
+            title: title,
+            when: when,
+            where: where,
+            who: who,
+            what: what,
+            why: why,
+            how: how,
+            status: status,
+            setTitle: setTitle,
+            setWhen: setWhen,
+            setWhere: setWhere,
+            setWho: setWho,
+            setWhat: setWhat,
+            setWhy: setWhy,
+            setHow: setHow,
+            setStatus: setStatus,
+          });
+          break;
+        case "3":
+          dispatchSolved({
+            type: "CREATE",
+            // qType: "solved",
+            // userId: user.id,
+            title: title,
+            when: when,
+            where: where,
+            who: who,
+            what: what,
+            why: why,
+            how: how,
+            status: status,
+            setTitle: setTitle,
+            setWhen: setWhen,
+            setWhere: setWhere,
+            setWho: setWho,
+            setWhat: setWhat,
+            setWhy: setWhy,
+            setHow: setHow,
+            setStatus: setStatus,
+          });
+          break;
+      }
+      onClose();
     }
-    onClose();
   }, [question, title, when, where, who, what, why, how, status, isOpen]);
 
   const onClickUpdate = useCallback(() => {
-    switch (status) {
-      case "1":
-        switch (question.status) {
-          case "1":
-            dispatch({
-              type: "UPDATE",
-              // qType: "new",
-              // userId: user.id,
-              id: question.id,
-              title: title,
-              when: when,
-              where: where,
-              who: who,
-              what: what,
-              why: why,
-              how: how,
-              status: status,
-            });
-            break;
-          case "2":
-            dispatchIn({
-              type: "DELETE",
-              // qType: "in",
-              // userId: user.id,
-              id: question.id,
-            });
-            dispatch({
-              type: "CREATE",
-              // qType: "new",
-              // userId: user.id,
-              title: title,
-              when: when,
-              where: where,
-              who: who,
-              what: what,
-              why: why,
-              how: how,
-              status: status,
-              setTitle: setTitle,
-              setWhen: setWhen,
-              setWhere: setWhere,
-              setWho: setWho,
-              setWhat: setWhat,
-              setWhy: setWhy,
-              setHow: setHow,
-              setStatus: setStatus,
-            });
-            break;
-          case "3":
-            dispatchSolved({
-              type: "DELETE",
-              // qType: "solved",
-              // userId: user.id,
-              id: question.id,
-            });
-            dispatch({
-              type: "CREATE",
-              // qType: "new",
-              // userId: user.id,
-              title: title,
-              when: when,
-              where: where,
-              who: who,
-              what: what,
-              why: why,
-              how: how,
-              status: status,
-              setTitle: setTitle,
-              setWhen: setWhen,
-              setWhere: setWhere,
-              setWho: setWho,
-              setWhat: setWhat,
-              setWhy: setWhy,
-              setHow: setHow,
-              setStatus: setStatus,
-            });
-            break;
-        }
-        break;
-      case "2":
-        switch (question.status) {
-          case "2":
-            dispatchIn({
-              type: "UPDATE",
-              // qType: "in",
-              // userId: user.id,
-              id: question.id,
-              title: title,
-              when: when,
-              where: where,
-              who: who,
-              what: what,
-              why: why,
-              how: how,
-              status: status,
-            });
-            break;
-          case "1":
-            dispatch({
-              type: "DELETE",
-              // qType: "new",
-              // userId: user.id,
-              id: question.id,
-            });
-            dispatchIn({
-              type: "CREATE",
-              // qType: "in",
-              // userId: user.id,
-              title: title,
-              when: when,
-              where: where,
-              who: who,
-              what: what,
-              why: why,
-              how: how,
-              status: status,
-              setTitle: setTitle,
-              setWhen: setWhen,
-              setWhere: setWhere,
-              setWho: setWho,
-              setWhat: setWhat,
-              setWhy: setWhy,
-              setHow: setHow,
-              setStatus: setStatus,
-            });
-            break;
-          case "3":
-            dispatchSolved({
-              type: "DELETE",
-              // qType: "solved",
-              // userId: user.id,
-              id: question.id,
-            });
-            dispatchIn({
-              type: "CREATE",
-              // qType: "in",
-              // userId: user.id,
-              title: title,
-              when: when,
-              where: where,
-              who: who,
-              what: what,
-              why: why,
-              how: how,
-              status: status,
-              setTitle: setTitle,
-              setWhen: setWhen,
-              setWhere: setWhere,
-              setWho: setWho,
-              setWhat: setWhat,
-              setWhy: setWhy,
-              setHow: setHow,
-              setStatus: setStatus,
-            });
-            break;
-        }
-        break;
-      case "3":
-        switch (question.status) {
-          case "3":
-            dispatchSolved({
-              type: "UPDATE",
-              // qType: "solved",
-              // userId: user.id,
-              id: question.id,
-              title: title,
-              when: when,
-              where: where,
-              who: who,
-              what: what,
-              why: why,
-              how: how,
-              status: status,
-            });
-            break;
-          case "1":
-            dispatch({
-              type: "DELETE",
-              // qType: "new",
-              // userId: user.id,
-              id: question.id,
-            });
-            dispatchSolved({
-              type: "CREATE",
-              // qType: "solved",
-              // userId: user.id,
-              title: title,
-              when: when,
-              where: where,
-              who: who,
-              what: what,
-              why: why,
-              how: how,
-              status: status,
-              setTitle: setTitle,
-              setWhen: setWhen,
-              setWhere: setWhere,
-              setWho: setWho,
-              setWhat: setWhat,
-              setWhy: setWhy,
-              setHow: setHow,
-              setStatus: setStatus,
-            });
-            break;
-          case "2":
-            dispatchIn({
-              type: "DELETE",
-              // qType: "in",
-              // userId: user.id,
-              id: question.id,
-            });
-            dispatchSolved({
-              type: "CREATE",
-              // qType: "solved",
-              // userId: user.id,
-              title: title,
-              when: when,
-              where: where,
-              who: who,
-              what: what,
-              why: why,
-              how: how,
-              status: status,
-              setTitle: setTitle,
-              setWhen: setWhen,
-              setWhere: setWhere,
-              setWho: setWho,
-              setWhat: setWhat,
-              setWhy: setWhy,
-              setHow: setHow,
-              setStatus: setStatus,
-            });
-            break;
-        }
-        break;
+    if (title === "") {
+      showMessage({
+        title: "タイトルを入力してください。",
+        status: "error",
+      });
+    } else {
+      switch (status) {
+        case "1":
+          switch (question.status) {
+            case "1":
+              dispatch({
+                type: "UPDATE",
+                // qType: "new",
+                // userId: user.id,
+                id: question.id,
+                title: title,
+                when: when,
+                where: where,
+                who: who,
+                what: what,
+                why: why,
+                how: how,
+                status: status,
+              });
+              break;
+            case "2":
+              dispatchIn({
+                type: "DELETE",
+                // qType: "in",
+                // userId: user.id,
+                id: question.id,
+              });
+              dispatch({
+                type: "CREATE",
+                // qType: "new",
+                // userId: user.id,
+                title: title,
+                when: when,
+                where: where,
+                who: who,
+                what: what,
+                why: why,
+                how: how,
+                status: status,
+                setTitle: setTitle,
+                setWhen: setWhen,
+                setWhere: setWhere,
+                setWho: setWho,
+                setWhat: setWhat,
+                setWhy: setWhy,
+                setHow: setHow,
+                setStatus: setStatus,
+              });
+              break;
+            case "3":
+              dispatchSolved({
+                type: "DELETE",
+                // qType: "solved",
+                // userId: user.id,
+                id: question.id,
+              });
+              dispatch({
+                type: "CREATE",
+                // qType: "new",
+                // userId: user.id,
+                title: title,
+                when: when,
+                where: where,
+                who: who,
+                what: what,
+                why: why,
+                how: how,
+                status: status,
+                setTitle: setTitle,
+                setWhen: setWhen,
+                setWhere: setWhere,
+                setWho: setWho,
+                setWhat: setWhat,
+                setWhy: setWhy,
+                setHow: setHow,
+                setStatus: setStatus,
+              });
+              break;
+          }
+          break;
+        case "2":
+          switch (question.status) {
+            case "2":
+              dispatchIn({
+                type: "UPDATE",
+                // qType: "in",
+                // userId: user.id,
+                id: question.id,
+                title: title,
+                when: when,
+                where: where,
+                who: who,
+                what: what,
+                why: why,
+                how: how,
+                status: status,
+              });
+              break;
+            case "1":
+              dispatch({
+                type: "DELETE",
+                // qType: "new",
+                // userId: user.id,
+                id: question.id,
+              });
+              dispatchIn({
+                type: "CREATE",
+                // qType: "in",
+                // userId: user.id,
+                title: title,
+                when: when,
+                where: where,
+                who: who,
+                what: what,
+                why: why,
+                how: how,
+                status: status,
+                setTitle: setTitle,
+                setWhen: setWhen,
+                setWhere: setWhere,
+                setWho: setWho,
+                setWhat: setWhat,
+                setWhy: setWhy,
+                setHow: setHow,
+                setStatus: setStatus,
+              });
+              break;
+            case "3":
+              dispatchSolved({
+                type: "DELETE",
+                // qType: "solved",
+                // userId: user.id,
+                id: question.id,
+              });
+              dispatchIn({
+                type: "CREATE",
+                // qType: "in",
+                // userId: user.id,
+                title: title,
+                when: when,
+                where: where,
+                who: who,
+                what: what,
+                why: why,
+                how: how,
+                status: status,
+                setTitle: setTitle,
+                setWhen: setWhen,
+                setWhere: setWhere,
+                setWho: setWho,
+                setWhat: setWhat,
+                setWhy: setWhy,
+                setHow: setHow,
+                setStatus: setStatus,
+              });
+              break;
+          }
+          break;
+        case "3":
+          switch (question.status) {
+            case "3":
+              dispatchSolved({
+                type: "UPDATE",
+                // qType: "solved",
+                // userId: user.id,
+                id: question.id,
+                title: title,
+                when: when,
+                where: where,
+                who: who,
+                what: what,
+                why: why,
+                how: how,
+                status: status,
+              });
+              break;
+            case "1":
+              dispatch({
+                type: "DELETE",
+                // qType: "new",
+                // userId: user.id,
+                id: question.id,
+              });
+              dispatchSolved({
+                type: "CREATE",
+                // qType: "solved",
+                // userId: user.id,
+                title: title,
+                when: when,
+                where: where,
+                who: who,
+                what: what,
+                why: why,
+                how: how,
+                status: status,
+                setTitle: setTitle,
+                setWhen: setWhen,
+                setWhere: setWhere,
+                setWho: setWho,
+                setWhat: setWhat,
+                setWhy: setWhy,
+                setHow: setHow,
+                setStatus: setStatus,
+              });
+              break;
+            case "2":
+              dispatchIn({
+                type: "DELETE",
+                // qType: "in",
+                // userId: user.id,
+                id: question.id,
+              });
+              dispatchSolved({
+                type: "CREATE",
+                // qType: "solved",
+                // userId: user.id,
+                title: title,
+                when: when,
+                where: where,
+                who: who,
+                what: what,
+                why: why,
+                how: how,
+                status: status,
+                setTitle: setTitle,
+                setWhen: setWhen,
+                setWhere: setWhere,
+                setWho: setWho,
+                setWhat: setWhat,
+                setWhy: setWhy,
+                setHow: setHow,
+                setStatus: setStatus,
+              });
+              break;
+          }
+          break;
+      }
+      onClose();
     }
-    onClose();
   }, [question, title, when, where, who, what, why, how, status, isOpen]);
 
   const onClickDelete = () => {

@@ -54,13 +54,13 @@ ${
     <Modal isOpen={isOpenTemplate} onClose={onCloseTemplate}>
       <ModalOverlay />
       <ModalContent pb={4} w="70%" maxW="" mx={30}>
-        <ModalHeader>質問テンプレート</ModalHeader>
+        <ModalHeader color="gray.500">質問テンプレート</ModalHeader>
         <ModalCloseButton />
         <Divider />
         <ModalBody pt={4}>
           <Flex mb={3} mr={2}>
             <Spacer />
-            <Text color="gray.300" pr={2}>
+            <Text color="gray.400" pr={2}>
               copy
             </Text>
             <CopyToClipboard text={questionText} onCopy={onCopyTemplate}>
