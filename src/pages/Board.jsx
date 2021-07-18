@@ -1,179 +1,21 @@
 import { useDisclosure } from "@chakra-ui/hooks";
-import { AddIcon } from "@chakra-ui/icons";
-import { WrapItem, Wrap, Flex, Box, Text } from "@chakra-ui/layout";
-import { HStack, Stack } from "@chakra-ui/react";
-// import { Auth } from "@supabase/ui";
+import { Flex } from "@chakra-ui/layout";
 import { useCallback, useEffect, useReducer } from "react";
+// import { Auth } from "@supabase/ui";
 
-import { QuestionCard } from "../components/organisms/question/QuestionCard";
 import { QuestionDetailModal } from "../components/organisms/question/QuestionDetailModal";
-import { LayoutWrapper } from "../components/templates/LayoutWrapper";
+import { ShowAllQuestion } from "../components/organisms/question/ShowAllQuestion";
 import { useSelectQuestion } from "../hooks/useSelectQuestion";
+import { QuestionReducer } from "../reducers/QuestionReducer";
 // import { client } from "../libs/supabase";
-
-// stateとactionを受け取り、actionのtypeによってstateの更新方法を変える
-const reducer = (state, action) => {
-  switch (action.type) {
-    // case "SELECT":
-    //   return action.data;
-    case "CREATE":
-      action.setTitle("");
-      action.setWhen("");
-      action.setWhere("");
-      action.setWho("");
-      action.setWhat("");
-      action.setWhy("");
-      action.setHow("");
-      action.setStatus("1");
-      if (state) {
-        const state_add = [
-          ...state,
-          {
-            id: state.slice(-1)[0].id + 1,
-            title: action.title,
-            when: action.when,
-            where: action.where,
-            who: action.who,
-            what: action.what,
-            why: action.why,
-            how: action.how,
-            status: action.status,
-          },
-        ];
-        // switch (action.qType) {
-        //   case "new":
-        //     await client
-        //       .from("question_new")
-        //       .update({ questions: state_add })
-        //       .match({ user_id: action.userId });
-        //     break;
-        //   case "in":
-        //     await client
-        //       .from("question_in")
-        //       .update({ questions: state_add })
-        //       .match({ user_id: action.userId });
-        //     break;
-        //   case "new":
-        //     await client
-        //       .from("question_solved")
-        //       .update({ questions: state_add })
-        //       .match({ user_id: action.userId });
-        //     break;
-        //   default:
-        //     break;
-        // }
-        return state_add;
-      } else {
-        const state_new = [
-          {
-            id: 1,
-            title: action.title,
-            when: action.when,
-            where: action.where,
-            who: action.who,
-            what: action.what,
-            why: action.why,
-            how: action.how,
-            status: action.status,
-          },
-        ];
-        // switch (action.qType) {
-        //   case "new":
-        //     await client
-        //       .from("question_new")
-        //       .insert({ user_id: action.userId, questions: state_new });
-        //     break;
-        //   case "in":
-        //     await client
-        //       .from("question_in")
-        //       .insert({ user_id: action.userId, questions: state_new });
-        //     break;
-        //   case "new":
-        //     await client
-        //       .from("question_solved")
-        //       .insert({ user_id: action.userId, questions: state_new });
-        //     break;
-        //   default:
-        //     break;
-        // }
-        return state_new;
-      }
-    case "UPDATE":
-      const state_copy = state.slice();
-      state_copy.map((q) => {
-        if (q.id === action.id) {
-          q.title = action.title;
-          q.when = action.when;
-          q.where = action.where;
-          q.who = action.who;
-          q.what = action.what;
-          q.why = action.why;
-          q.how = action.how;
-          q.status = action.status;
-        }
-      });
-      // switch (action.qType) {
-      //   case "new":
-      //     await client
-      //       .from("question_new")
-      //       .update({ questions: state_copy })
-      //       .match({ user_id: action.userId });
-      //     break;
-      //   case "in":
-      //     await client
-      //       .from("question_in")
-      //       .update({ questions: state_copy })
-      //       .match({ user_id: action.userId });
-      //     break;
-      //   case "new":
-      //     await client
-      //       .from("question_solved")
-      //       .update({ questions: state_copy })
-      //       .match({ user_id: action.userId });
-      //     break;
-      //   default:
-      //     break;
-      // }
-      return state_copy;
-    case "DELETE":
-      const newState = state.filter((q) => q.id !== action.id);
-      // switch (action.qType) {
-      //   case "new":
-      //     await client
-      //       .from("question_new")
-      //       .update({ questions: newState })
-      //       .match({ user_id: action.userId });
-      //     break;
-      //   case "in":
-      //     await client
-      //       .from("question_in")
-      //       .update({ questions: newState })
-      //       .match({ user_id: action.userId });
-      //     break;
-      //   case "new":
-      //     await client
-      //       .from("question_solved")
-      //       .update({ questions: newState })
-      //       .match({ user_id: action.userId });
-      //     break;
-      //   default:
-      //     break;
-      // }
-      if (newState.length !== 0) {
-        return newState;
-      } else {
-        return null;
-      }
-  }
-};
 
 const Board = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { onSelectQuestion, selectedQuestion } = useSelectQuestion();
 
-  const [questions, dispatch] = useReducer(reducer, null);
-  const [inQuestions, dispatchIn] = useReducer(reducer, null);
-  const [solvedQuestions, dispatchSolved] = useReducer(reducer, null);
+  const [questions, dispatch] = useReducer(QuestionReducer, null);
+  const [inQuestions, dispatchIn] = useReducer(QuestionReducer, null);
+  const [solvedQuestions, dispatchSolved] = useReducer(QuestionReducer, null);
 
   // const fetchQuestionsNew = useCallback(async () => {
   //   const { dataQuestionsNew, error } = await client
@@ -229,133 +71,31 @@ const Board = () => {
 
   return (
     <>
-      <LayoutWrapper>
-        <Flex p={{ base: 4, md: 6 }} overflowX="auto">
-          <Box mr={5}>
-            <Box
-              w={{ base: "80vw", md: "28vw" }}
-              h="50px"
-              bg="white"
-              borderRadius="10px"
-              borderTopWidth="3px"
-              borderTopColor="gray.500"
-              shadow="md"
-              p={3}
-              mb={{ base: 4, md: 4 }}
-              _hover={{ cursor: "pointer", opacity: 0.8 }}
-              onClick={() => onClickCard(0, "")}
-            >
-              <HStack align="center" justify="center">
-                <AddIcon />
-                <Text fontSize="md" color="gray">
-                  New
-                </Text>
-              </HStack>
-            </Box>
-            <Wrap
-              // p={{ md: 2 }}
-              flexDirection="column"
-              w={{ base: "auto", md: "30vw" }}
-              h={{ md: "80vh" }}
-              overflowY={{ md: "auto" }}
-              overflowX={{ md: "hidden" }}
-              spacing={{ base: 4, md: "20px" }}
-            >
-              {questions
-                ? questions.map((question) => (
-                    <WrapItem key={question.id}>
-                      <QuestionCard question={question} onClick={onClickCard} />
-                    </WrapItem>
-                  ))
-                : null}
-            </Wrap>
-          </Box>
-          <Box mr={5}>
-            <Box
-              w={{ base: "80vw", md: "28vw" }}
-              h="50px"
-              bg="white"
-              borderRadius="10px"
-              borderTopWidth="3px"
-              borderTopColor="blue.500"
-              shadow="md"
-              p={3}
-              mb={{ base: 4, md: 4 }}
-              // _hover={{ cursor: "pointer", opacity: 0.8 }}
-              // onClick={() => onClickCard(0)}
-            >
-              <Stack textAlign="center">
-                <Text fontSize="md" color="gray">
-                  In Question
-                </Text>
-              </Stack>
-            </Box>
-            <Wrap
-              // p={{ md: 2 }}
-              flexDirection="column"
-              w={{ base: "auto", md: "30vw" }}
-              h={{ md: "80vh" }}
-              overflowY={{ md: "auto" }}
-              overflowX={{ md: "hidden" }}
-              spacing={{ base: 4, md: "20px" }}
-            >
-              {inQuestions
-                ? inQuestions.map((question) => (
-                    <WrapItem key={question.id}>
-                      <QuestionCard question={question} onClick={onClickCard} />
-                    </WrapItem>
-                  ))
-                : null}
-            </Wrap>
-          </Box>
-          <Box mr={5}>
-            <Box
-              w={{ base: "80vw", md: "28vw" }}
-              h="50px"
-              bg="white"
-              borderRadius="10px"
-              borderTopWidth="3px"
-              borderTopColor="green.500"
-              shadow="md"
-              p={3}
-              mb={{ base: 4, md: 4 }}
-              // _hover={{ cursor: "pointer", opacity: 0.8 }}
-              // onClick={() => onClickCard(0)}
-            >
-              <Stack textAlign="center">
-                <Text fontSize="md" color="gray">
-                  Solved
-                </Text>
-              </Stack>
-            </Box>
-            <Wrap
-              // p={{ md: 2 }}
-              flexDirection="column"
-              w={{ base: "auto", md: "30vw" }}
-              h={{ md: "80vh" }}
-              overflowY={{ md: "auto" }}
-              overflowX={{ md: "hidden" }}
-              spacing={{ base: 4, md: "20px" }}
-            >
-              {solvedQuestions
-                ? solvedQuestions.map((question) => (
-                    <WrapItem key={question.id}>
-                      <QuestionCard question={question} onClick={onClickCard} />
-                    </WrapItem>
-                  ))
-                : null}
-            </Wrap>
-          </Box>
-        </Flex>
-        <QuestionDetailModal
-          question={selectedQuestion}
-          isOpen={isOpen}
-          onClose={onClose}
-          dispatch={dispatch}
-          dispatchIn={dispatchIn}
-          dispatchSolved={dispatchSolved}
+      <Flex p={{ base: 4, md: 6 }} overflowX="auto">
+        <ShowAllQuestion
+          onClickCard={onClickCard}
+          questions={questions}
+          status="New"
         />
-      </LayoutWrapper>
+        <ShowAllQuestion
+          onClickCard={onClickCard}
+          questions={inQuestions}
+          status="In Question"
+        />
+        <ShowAllQuestion
+          onClickCard={onClickCard}
+          questions={solvedQuestions}
+          status="Solved"
+        />
+      </Flex>
+      <QuestionDetailModal
+        question={selectedQuestion}
+        isOpen={isOpen}
+        onClose={onClose}
+        dispatch={dispatch}
+        dispatchIn={dispatchIn}
+        dispatchSolved={dispatchSolved}
+      />
     </>
   );
 };
