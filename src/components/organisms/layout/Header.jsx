@@ -36,8 +36,8 @@ export const Header = () => {
     <>
       <Flex
         as="nav"
-        bg="teal.500"
-        color="gray.50"
+        bg="white"
+        color="gray.500"
         align="center"
         justify="space-between"
         padding={{ base: 3, md: 5 }}
@@ -46,10 +46,14 @@ export const Header = () => {
           align="center"
           as="a"
           mr={8}
-          _hover={{ cursor: "pointer" }}
+          _hover={{ cursor: "pointer", opacity: 0.6 }}
           onClick={onClickTop}
         >
-          <Heading as="h1" fontSize={{ base: "md", md: "lg" }}>
+          <Heading
+            as="h1"
+            fontSize={{ base: "md", md: "lg" }}
+            fontFamily="BioRhyme"
+          >
             Qask
           </Heading>
         </Flex>
@@ -64,7 +68,7 @@ export const Header = () => {
               {NAV_ITEMS.map((item) => {
                 return (
                   <>
-                    <Box pr={4}>
+                    <Box pr={4} _hover={{ cursor: "pointer", opacity: 0.6 }}>
                       <Link key={item.href} href={item.href}>
                         <a>{item.label}</a>
                       </Link>

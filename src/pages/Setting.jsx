@@ -1,7 +1,14 @@
+import { Box, ListItem, UnorderedList } from "@chakra-ui/react";
+
 const Setting = () => {
   return (
     <>
-      <p>設定ページです</p>
+      <Box m={4}>
+        <p>設定ページは現在開発中です</p>
+        <UnorderedList>
+          <ListItem>メールアドレス・パスワード変更等</ListItem>
+        </UnorderedList>
+      </Box>
     </>
   );
 };

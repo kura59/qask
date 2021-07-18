@@ -9,10 +9,10 @@ export const QuestionCard = (props) => {
       w={{ base: "80vw", md: "28vw" }}
       h="auto"
       bg="white"
-      borderRadius="10px"
+      borderRadius="5px"
       shadow="md"
       p={4}
-      _hover={{ cursor: "pointer", opacity: 0.8 }}
+      _hover={{ cursor: "pointer", opacity: 0.6 }}
       onClick={() => onClick(question.id, question.status)}
     >
       <Stack textAlign="center">

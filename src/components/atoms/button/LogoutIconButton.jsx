@@ -10,9 +10,10 @@ const LogoutIconButton = (props) => {
       size="sm"
       variant="unstyled"
       display={{ base: "none", md: "block" }}
+      _hover={{ cursor: "pointer", opacity: 0.6 }}
       onClick={onClickLogout}
     >
-      Sign out
+      Sign Out
     </Button>
   );
 };

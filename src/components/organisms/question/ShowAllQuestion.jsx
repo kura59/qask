@@ -12,13 +12,13 @@ const Container = (props) => {
           w={{ base: "80vw", md: "28vw" }}
           h="50px"
           bg="white"
-          borderRadius="10px"
+          borderRadius="5px"
           borderTopWidth="3px"
           borderTopColor="gray.500"
           shadow="md"
           p={3}
           mb={{ base: 4, md: 4 }}
-          _hover={{ cursor: "pointer", opacity: 0.8 }}
+          _hover={{ cursor: "pointer", opacity: 0.6 }}
           onClick={() => onClickCard(0, "")}
         >
           {props.children}
@@ -30,7 +30,7 @@ const Container = (props) => {
           w={{ base: "80vw", md: "28vw" }}
           h="50px"
           bg="white"
-          borderRadius="10px"
+          borderRadius="5px"
           borderTopWidth="3px"
           borderTopColor="blue.500"
           shadow="md"
@@ -46,7 +46,7 @@ const Container = (props) => {
           w={{ base: "80vw", md: "28vw" }}
           h="50px"
           bg="white"
-          borderRadius="10px"
+          borderRadius="5px"
           borderTopWidth="3px"
           borderTopColor="green.500"
           shadow="md"
@@ -67,14 +67,14 @@ export const ShowAllQuestion = (props) => {
       <Container status={status} onClickCard={onClickCard}>
         {status === "New" ? (
           <HStack align="center" justify="center">
-            <AddIcon />
-            <Text fontSize="md" color="gray">
+            <AddIcon color="gray.500" boxSize={3} />
+            <Text fontSize="md" color="gray.500">
               {status}
             </Text>
           </HStack>
         ) : (
           <Stack textAlign="center">
-            <Text fontSize="md" color="gray">
+            <Text fontSize="md" color="gray.500">
               {status}
             </Text>
           </Stack>
