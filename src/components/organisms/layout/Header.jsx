@@ -6,31 +6,31 @@ import MenuDrawer from "../../molecules/MenuDrawer";
 import { useRouter } from "next/router";
 import LogoutIconButton from "../../atoms/button/LogoutIconButton";
 import { client } from "../../../libs/supabase";
+import { Auth } from "@supabase/ui";
 
-const NAV_ITEMS = [
-  { href: "/Board", label: "ボード" },
-  { href: "/Setting", label: "設定" },
-];
+const NAV_ITEMS = [{ href: "/Setting", label: "Setting" }];
 
 export const Header = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const router = useRouter();
+  const { user } = Auth.useUser();
+
   const onClickTop = (e) => {
     e.preventDefault();
-    router.push("/Top");
+    router.push("/");
+    onClose();
   };
-  const onClickBoard = (e) => {
-    e.preventDefault();
-    router.push("/Board");
-  };
+
   const onClickSetting = (e) => {
     e.preventDefault();
     router.push("/Setting");
+    onClose();
   };
   const onClickLogout = (e) => {
     e.preventDefault();
     client.auth.signOut();
     router.push("/");
+    onClose();
   };
   return (
     <>
@@ -53,32 +53,35 @@ export const Header = () => {
             Qask
           </Heading>
         </Flex>
-        <Flex
-          align="center"
-          fontSize="sm"
-          flexGrow={2}
-          display={{ base: "none", md: "flex" }}
-        >
-          {NAV_ITEMS.map((item) => {
-            return (
-              <>
-                <Box pr={4}>
-                  <Link key={item.href} href={item.href}>
-                    <a>{item.label}</a>
-                  </Link>
-                </Box>
-              </>
-            );
-          })}
-        </Flex>
-        <LogoutIconButton onClickLogout={onClickLogout} />
-        <MenuIconButton onOpen={onOpen} />
+        {user ? (
+          <>
+            <Flex
+              align="center"
+              fontSize="sm"
+              flexGrow={2}
+              display={{ base: "none", md: "flex" }}
+            >
+              {NAV_ITEMS.map((item) => {
+                return (
+                  <>
+                    <Box pr={4}>
+                      <Link key={item.href} href={item.href}>
+                        <a>{item.label}</a>
+                      </Link>
+                    </Box>
+                  </>
+                );
+              })}
+            </Flex>
+            <LogoutIconButton onClickLogout={onClickLogout} />
+            <MenuIconButton onOpen={onOpen} />
+          </>
+        ) : null}
       </Flex>
       <MenuDrawer
         isOpen={isOpen}
         onClose={onClose}
         onClickTop={onClickTop}
-        onClickBoard={onClickBoard}
         onClickSetting={onClickSetting}
         onClickLogout={onClickLogout}
       />

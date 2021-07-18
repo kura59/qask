@@ -7,14 +7,7 @@ import {
 } from "@chakra-ui/modal";
 
 const MenuDrawer = (props) => {
-  const {
-    isOpen,
-    onClose,
-    onClickTop,
-    onClickBoard: onClickBoard,
-    onClickSetting,
-    onClickLogout,
-  } = props;
+  const { isOpen, onClose, onClickTop, onClickSetting, onClickLogout } = props;
   return (
     <Drawer placement="left" size="xs" onClose={onClose} isOpen={isOpen}>
       <DrawerOverlay>
@@ -23,11 +16,8 @@ const MenuDrawer = (props) => {
             <Button w="100%" onClick={onClickTop}>
               Top
             </Button>
-            <Button w="100%" onClick={onClickBoard}>
-              ボード
-            </Button>
             <Button w="100%" onClick={onClickSetting}>
-              設定
+              Setting
             </Button>
             <Button w="100%" onClick={onClickLogout}>
               Sign out
