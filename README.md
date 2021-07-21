@@ -1,34 +1,34 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Qask
 
-## Getting Started
+## Qask とは
 
-First, run the development server:
+### Question ＋ Task
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+分からないことや質問したいこと（Question）をタスク管理（Task）の要領で整理する
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 概要
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+在宅ワークなどの影響により、文面でコミュニケーションを取る機会が増える中で、
+報告・相談・確認したいことを相手に伝える際に、その文面を作成する時間を効率化するためのアプリ
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+## 機能
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+- 問題の内容を 5W1H の観点で記入し、それらをもとに質問文のテンプレートを作成する機能
 
-## Learn More
+- 質問を状況ごと（新規・質問中・解決済み）に管理する機能
 
-To learn more about Next.js, take a look at the following resources:
+## 使用技術
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- [React](https://ja.reactjs.org/)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- [Next.js](https://nextjs.org/)
 
-## Deploy on Vercel
+- [Chakra UI](https://chakra-ui.com/)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- [Supabase](https://app.supabase.io/)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- [Supabase UI](https://ui.supabase.io/)
+
+## Contributors
+
+- [kura59](https://github.com/kura59)
