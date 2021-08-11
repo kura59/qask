@@ -59,6 +59,7 @@ const Container = (props) => {
   }
 };
 
+//propsで渡されたquestionsをもとに、質問カード一覧表示用コンポーネント
 export const ShowAllQuestion = (props) => {
   const { onClickCard, questions, status } = props;
 

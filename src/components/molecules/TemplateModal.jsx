@@ -15,6 +15,7 @@ import React, { useEffect, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import CopyTemplateButton from "../atoms/button/CopyTemplateButton";
 
+//質問テンプレート表示・編集用のモーダルコンポーネント
 const TemplateModal = (props) => {
   const {
     isOpenTemplate,
