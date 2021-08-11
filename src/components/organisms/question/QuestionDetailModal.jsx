@@ -1,6 +1,6 @@
 import { FormLabel, FormControl } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";
-import { Stack, Flex } from "@chakra-ui/layout";
+import { Stack } from "@chakra-ui/layout";
 import {
   ModalHeader,
   ModalBody,
@@ -12,18 +12,28 @@ import {
 } from "@chakra-ui/modal";
 import { useDisclosure } from "@chakra-ui/hooks";
 import { Select, Spacer, Textarea, Button } from "@chakra-ui/react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import PrimaryButton from "../../atoms/button/PrimaryButton";
 import DeleteQuestionButton from "../../atoms/button/DeleteQuestionButton";
 import DeleteDialog from "../../molecules/DeleteDialog";
 import TemplateModal from "../../molecules/TemplateModal";
 import { useMessage } from "../../../hooks/useMessage";
 import { useCRUDQuestion } from "../../../hooks/useCRUDQuestion";
-// import { Auth } from "@supabase/ui";
 
+//質問カードクリック時に表示する、詳細情報入出力用のモーダルコンポーネント
 export const QuestionDetailModal = (props) => {
-  const { question, isOpen, onClose, dispatch, dispatchIn, dispatchSolved } =
-    props;
+  const {
+    question,
+    isOpen,
+    onClose,
+    dispatch,
+    dispatchIn,
+    dispatchSolved,
+    questions,
+    inQuestions,
+    solvedQuestions,
+    client,
+  } = props;
 
   const {
     isOpen: isOpenAlert,
@@ -76,7 +86,11 @@ export const QuestionDetailModal = (props) => {
     onClose,
     isOpen,
     onCloseAlert,
-    showMessage
+    showMessage,
+    questions,
+    inQuestions,
+    solvedQuestions,
+    client
   );
 
   // const { user } = Auth.useUser();
