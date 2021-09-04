@@ -52,28 +52,36 @@ export const QuestionDetailModal = (props) => {
   const {
     title,
     when,
-    where,
-    who,
     what,
-    why,
-    how,
+    who,
+    task,
+    done,
+    image,
+    hope,
+    memo,
     status,
-    rowsWhere,
     rowsWhat,
-    rowsWhy,
-    rowsHow,
+    rowsTask,
+    rowsDone,
+    rowsImage,
+    rowsHope,
+    rowsMemo,
     setTitle,
     setWhen,
-    setWhere,
-    setWho,
     setWhat,
-    setWhy,
-    setHow,
+    setWho,
+    setTask,
+    setDone,
+    setImage,
+    setHope,
+    setMemo,
     setStatus,
-    setRowsWhere,
     setRowsWhat,
-    setRowsWhy,
-    setRowsHow,
+    setRowsTask,
+    setRowsDone,
+    setRowsImage,
+    setRowsHope,
+    setRowsMemo,
     onChangeRows,
     onClickCreate,
     onClickUpdate,
@@ -99,58 +107,74 @@ export const QuestionDetailModal = (props) => {
     if (question) {
       setTitle(question.title);
       setWhen(question.when);
-      setWhere(question.where);
-      setWho(question.who);
       setWhat(question.what);
-      setWhy(question.why);
-      setHow(question.how);
+      setWho(question.who);
+      setTask(question.task);
+      setDone(question.done);
+      setImage(question.image);
+      setHope(question.hope);
+      setMemo(question.memo);
       setStatus(question.status);
-      setRowsWhere(
-        question.where.split("\n").length > 3
-          ? question.where.split("\n").length
-          : 3
-      );
       setRowsWhat(
         question.what.split("\n").length > 3
           ? question.what.split("\n").length
           : 3
       );
-      setRowsWhy(
-        question.why.split("\n").length > 3
-          ? question.why.split("\n").length
+      setRowsTask(
+        question.task.split("\n").length > 3
+          ? question.task.split("\n").length
           : 3
       );
-      setRowsHow(
-        question.how.split("\n").length > 3
-          ? question.how.split("\n").length
+      setRowsDone(
+        question.done.split("\n").length > 3
+          ? question.done.split("\n").length
+          : 3
+      );
+      setRowsImage(
+        question.image.split("\n").length > 3
+          ? question.image.split("\n").length
+          : 3
+      );
+      setRowsHope(
+        question.hope.split("\n").length > 3
+          ? question.hope.split("\n").length
+          : 3
+      );
+      setRowsMemo(
+        question.memo.split("\n").length > 3
+          ? question.memo.split("\n").length
           : 3
       );
     } else {
       setTitle("");
       setWhen("");
-      setWhere("");
-      setWho("");
       setWhat("");
-      setWhy("");
-      setHow("");
+      setWho("");
+      setTask("");
+      setDone("");
+      setImage("");
+      setHope("");
+      setMemo("");
       setStatus("1");
-      setRowsWhere(3);
       setRowsWhat(3);
-      setRowsWhy(3);
-      setRowsHow(3);
+      setRowsTask(3);
+      setRowsDone(3);
+      setRowsImage(3);
+      setRowsHope(3);
+      setRowsMemo(3);
     }
   }, [question, isOpen]);
 
   const onClickTemplate = useCallback(() => {
     if (title === "" || what === "") {
       showMessage({
-        title: "タイトル・What（問題概要）を入力してください。",
+        title: "タイトルと発生した事象・問題（what）を入力してください。",
         status: "error",
       });
     } else {
       onOpenTemplate();
     }
-  }, [title, what]);
+  }, [title, task]);
 
   const STATUS = [
     { code: "1", name: "New" },
@@ -183,7 +207,7 @@ export const QuestionDetailModal = (props) => {
         <ModalBody mx={4} overflowY="scroll">
           <Stack spacing={4}>
             <FormControl>
-              <FormLabel>When（発生日時・期限）</FormLabel>
+              <FormLabel>作成日（When）</FormLabel>
               <Input
                 type="date"
                 value={when}
@@ -191,21 +215,11 @@ export const QuestionDetailModal = (props) => {
               />
             </FormControl>
             <FormControl>
-              <FormLabel>Who（担当者）</FormLabel>
+              <FormLabel>担当者（Who）</FormLabel>
               <Input value={who} onChange={(e) => setWho(e.target.value)} />
             </FormControl>
             <FormControl>
-              <FormLabel>Where（発生ケース）</FormLabel>
-              <Textarea
-                value={where}
-                onChange={(e) => onChangeRows(e.target.value, "where")}
-                overflow="hidden"
-                resize="none"
-                rows={rowsWhere}
-              />
-            </FormControl>
-            <FormControl>
-              <FormLabel>What（問題概要）</FormLabel>
+              <FormLabel>発生した事象・問題（What）</FormLabel>
               <Textarea
                 value={what}
                 onChange={(e) => onChangeRows(e.target.value, "what")}
@@ -215,23 +229,53 @@ export const QuestionDetailModal = (props) => {
               />
             </FormControl>
             <FormControl>
-              <FormLabel>Why（発生原因）</FormLabel>
+              <FormLabel>必要な課題（Task）</FormLabel>
               <Textarea
-                value={why}
-                onChange={(e) => onChangeRows(e.target.value, "why")}
+                value={task}
+                onChange={(e) => onChangeRows(e.target.value, "task")}
                 overflow="hidden"
                 resize="none"
-                rows={rowsWhy}
+                rows={rowsTask}
               />
             </FormControl>
             <FormControl>
-              <FormLabel>How（解決策）</FormLabel>
+              <FormLabel>試したこと（done）</FormLabel>
               <Textarea
-                value={how}
-                onChange={(e) => onChangeRows(e.target.value, "how")}
+                value={done}
+                onChange={(e) => onChangeRows(e.target.value, "done")}
                 overflow="hidden"
                 resize="none"
-                rows={rowsHow}
+                rows={rowsDone}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel>問題に対する仮説（Image）</FormLabel>
+              <Textarea
+                value={image}
+                onChange={(e) => onChangeRows(e.target.value, "image")}
+                overflow="hidden"
+                resize="none"
+                rows={rowsImage}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel>質問相手に期待する内容（Hope）</FormLabel>
+              <Textarea
+                value={hope}
+                onChange={(e) => onChangeRows(e.target.value, "hope")}
+                overflow="hidden"
+                resize="none"
+                rows={rowsHope}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel>共有事項（memo）</FormLabel>
+              <Textarea
+                value={memo}
+                onChange={(e) => onChangeRows(e.target.value, "memo")}
+                overflow="hidden"
+                resize="none"
+                rows={rowsMemo}
               />
             </FormControl>
           </Stack>
@@ -268,10 +312,12 @@ export const QuestionDetailModal = (props) => {
         onCloseTemplate={onCloseTemplate}
         showMessage={showMessage}
         title={title}
-        where={where}
         what={what}
-        why={why}
-        how={how}
+        task={task}
+        done={done}
+        image={image}
+        hope={hope}
+        memo={memo}
       />
     </Modal>
   );

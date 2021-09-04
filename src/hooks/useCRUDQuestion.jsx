@@ -18,16 +18,20 @@ export const useCRUDQuestion = (
 ) => {
   const [title, setTitle] = useState("");
   const [when, setWhen] = useState("");
-  const [where, setWhere] = useState("");
-  const [who, setWho] = useState("");
   const [what, setWhat] = useState("");
-  const [why, setWhy] = useState("");
-  const [how, setHow] = useState("");
+  const [who, setWho] = useState("");
+  const [task, setTask] = useState("");
+  const [done, setDone] = useState("");
+  const [image, setImage] = useState("");
+  const [hope, setHope] = useState("");
+  const [memo, setMemo] = useState("");
   const [status, setStatus] = useState("");
-  const [rowsWhere, setRowsWhere] = useState();
   const [rowsWhat, setRowsWhat] = useState();
-  const [rowsWhy, setRowsWhy] = useState();
-  const [rowsHow, setRowsHow] = useState();
+  const [rowsTask, setRowsTask] = useState();
+  const [rowsDone, setRowsDone] = useState();
+  const [rowsImage, setRowsImage] = useState();
+  const [rowsHope, setRowsHope] = useState();
+  const [rowsMemo, setRowsMemo] = useState();
 
   const { user } = Auth.useUser();
 
@@ -35,21 +39,29 @@ export const useCRUDQuestion = (
   const onChangeRows = (val, type) => {
     const valLength = val.split("\n").length;
     switch (type) {
-      case "where":
-        setWhere(val);
-        valLength > 3 ? setRowsWhere(valLength) : setRowsWhere(3);
-        break;
       case "what":
         setWhat(val);
         valLength > 3 ? setRowsWhat(valLength) : setRowsWhat(3);
         break;
-      case "why":
-        setWhy(val);
-        valLength > 3 ? setRowsWhy(valLength) : setRowsWhy(3);
+      case "task":
+        setTask(val);
+        valLength > 3 ? setRowsTask(valLength) : setRowsTask(3);
         break;
-      case "how":
-        setHow(val);
-        valLength > 3 ? setRowsHow(valLength) : setRowsHow(3);
+      case "done":
+        setDone(val);
+        valLength > 3 ? setRowsDone(valLength) : setRowsDone(3);
+        break;
+      case "image":
+        setImage(val);
+        valLength > 3 ? setRowsImage(valLength) : setRowsImage(3);
+        break;
+      case "hope":
+        setHope(val);
+        valLength > 3 ? setRowsHope(valLength) : setRowsHope(3);
+        break;
+      case "memo":
+        setMemo(val);
+        valLength > 3 ? setRowsMemo(valLength) : setRowsMemo(3);
         break;
     }
   };
@@ -150,11 +162,13 @@ export const useCRUDQuestion = (
           id: state.slice(-1)[0].id + 1,
           title: title,
           when: when,
-          where: where,
-          who: who,
           what: what,
-          why: why,
-          how: how,
+          who: who,
+          task: task,
+          done: done,
+          image: image,
+          hope: hope,
+          memo: memo,
           status: status,
         },
       ];
@@ -165,11 +179,13 @@ export const useCRUDQuestion = (
           id: 1,
           title: title,
           when: when,
-          where: where,
-          who: who,
           what: what,
-          why: why,
-          how: how,
+          who: who,
+          task: task,
+          done: done,
+          image: image,
+          hope: hope,
+          memo: memo,
           status: status,
         },
       ];
@@ -184,11 +200,13 @@ export const useCRUDQuestion = (
       if (q.id === question.id) {
         q.title = title;
         q.when = when;
-        q.where = where;
-        q.who = who;
         q.what = what;
-        q.why = why;
-        q.how = how;
+        q.who = who;
+        q.task = task;
+        q.done = done;
+        q.image = image;
+        q.hope = hope;
+        q.memo = memo;
         q.status = status;
       }
     });
@@ -220,11 +238,13 @@ export const useCRUDQuestion = (
             type: "CREATE",
             title: title,
             when: when,
-            where: where,
-            who: who,
             what: what,
-            why: why,
-            how: how,
+            who: who,
+            task: task,
+            done: done,
+            image: image,
+            hope: hope,
+            memo: memo,
             status: status,
           });
 
@@ -241,11 +261,13 @@ export const useCRUDQuestion = (
             type: "CREATE",
             title: title,
             when: when,
-            where: where,
-            who: who,
             what: what,
-            why: why,
-            how: how,
+            who: who,
+            task: task,
+            done: done,
+            image: image,
+            hope: hope,
+            memo: memo,
             status: status,
           });
 
@@ -262,11 +284,13 @@ export const useCRUDQuestion = (
             type: "CREATE",
             title: title,
             when: when,
-            where: where,
-            who: who,
             what: what,
-            why: why,
-            how: how,
+            who: who,
+            task: task,
+            done: done,
+            image: image,
+            hope: hope,
+            memo: memo,
             status: status,
           });
 
@@ -280,11 +304,13 @@ export const useCRUDQuestion = (
       }
       setTitle("");
       setWhen("");
-      setWhere("");
-      setWho("");
       setWhat("");
-      setWhy("");
-      setHow("");
+      setWho("");
+      setTask("");
+      setDone("");
+      setImage("");
+      setHope("");
+      setMemo("");
       setStatus("1");
       onClose();
     }
@@ -292,11 +318,13 @@ export const useCRUDQuestion = (
     question,
     title,
     when,
-    where,
-    who,
     what,
-    why,
-    how,
+    who,
+    task,
+    done,
+    image,
+    hope,
+    memo,
     status,
     isOpen,
     questions,
@@ -322,11 +350,13 @@ export const useCRUDQuestion = (
                 id: question.id,
                 title: title,
                 when: when,
-                where: where,
-                who: who,
                 what: what,
-                why: why,
-                how: how,
+                who: who,
+                task: task,
+                done: done,
+                image: image,
+                hope: hope,
+                memo: memo,
                 status: status,
               });
               //dispatchによる更新が即時反映されないため、更新後のstateを再定義することで対応
@@ -341,11 +371,13 @@ export const useCRUDQuestion = (
                 type: "CREATE",
                 title: title,
                 when: when,
-                where: where,
-                who: who,
                 what: what,
-                why: why,
-                how: how,
+                who: who,
+                task: task,
+                done: done,
+                image: image,
+                hope: hope,
+                memo: memo,
                 status: status,
               });
               //dispatchによる更新が即時反映されないため、更新後のstateを再定義することで対応
@@ -365,11 +397,13 @@ export const useCRUDQuestion = (
                 type: "CREATE",
                 title: title,
                 when: when,
-                where: where,
-                who: who,
                 what: what,
-                why: why,
-                how: how,
+                who: who,
+                task: task,
+                done: done,
+                image: image,
+                hope: hope,
+                memo: memo,
                 status: status,
               });
               //dispatchによる更新が即時反映されないため、更新後のstateを再定義することで対応
@@ -391,11 +425,13 @@ export const useCRUDQuestion = (
                 id: question.id,
                 title: title,
                 when: when,
-                where: where,
-                who: who,
                 what: what,
-                why: why,
-                how: how,
+                who: who,
+                task: task,
+                done: done,
+                image: image,
+                hope: hope,
+                memo: memo,
                 status: status,
               });
               //dispatchによる更新が即時反映されないため、更新後のstateを再定義することで対応
@@ -410,11 +446,13 @@ export const useCRUDQuestion = (
                 type: "CREATE",
                 title: title,
                 when: when,
-                where: where,
-                who: who,
                 what: what,
-                why: why,
-                how: how,
+                who: who,
+                task: task,
+                done: done,
+                image: image,
+                hope: hope,
+                memo: memo,
                 status: status,
               });
               //dispatchによる更新が即時反映されないため、更新後のstateを再定義することで対応
@@ -434,11 +472,13 @@ export const useCRUDQuestion = (
                 type: "CREATE",
                 title: title,
                 when: when,
-                where: where,
-                who: who,
                 what: what,
-                why: why,
-                how: how,
+                who: who,
+                task: task,
+                done: done,
+                image: image,
+                hope: hope,
+                memo: memo,
                 status: status,
               });
               //dispatchによる更新が即時反映されないため、更新後のstateを再定義することで対応
@@ -460,11 +500,13 @@ export const useCRUDQuestion = (
                 id: question.id,
                 title: title,
                 when: when,
-                where: where,
-                who: who,
                 what: what,
-                why: why,
-                how: how,
+                who: who,
+                task: task,
+                done: done,
+                image: image,
+                hope: hope,
+                memo: memo,
                 status: status,
               });
               //dispatchによる更新が即時反映されないため、更新後のstateを再定義することで対応
@@ -479,11 +521,13 @@ export const useCRUDQuestion = (
                 type: "CREATE",
                 title: title,
                 when: when,
-                where: where,
-                who: who,
                 what: what,
-                why: why,
-                how: how,
+                who: who,
+                task: task,
+                done: done,
+                image: image,
+                hope: hope,
+                memo: memo,
                 status: status,
               });
               //dispatchによる更新が即時反映されないため、更新後のstateを再定義することで対応
@@ -503,11 +547,13 @@ export const useCRUDQuestion = (
                 type: "CREATE",
                 title: title,
                 when: when,
-                where: where,
-                who: who,
                 what: what,
-                why: why,
-                how: how,
+                who: who,
+                task: task,
+                done: done,
+                image: image,
+                hope: hope,
+                memo: memo,
                 status: status,
               });
               //dispatchによる更新が即時反映されないため、更新後のstateを再定義することで対応
@@ -523,11 +569,13 @@ export const useCRUDQuestion = (
       }
       // setTitle("");
       // setWhen("");
-      // setWhere("");
-      // setWho("");
       // setWhat("");
-      // setWhy("");
-      // setHow("");
+      // setWho("");
+      // setTask("");
+      // setDone("");
+      // setImage("");
+      // setHope("");
+      // setMemo("");
       // setStatus("1");
       onClose();
     }
@@ -535,11 +583,13 @@ export const useCRUDQuestion = (
     question,
     title,
     when,
-    where,
-    who,
     what,
-    why,
-    how,
+    who,
+    task,
+    done,
+    image,
+    hope,
+    memo,
     status,
     isOpen,
     questions,
@@ -581,11 +631,13 @@ export const useCRUDQuestion = (
     question,
     title,
     when,
-    where,
-    who,
     what,
-    why,
-    how,
+    who,
+    task,
+    done,
+    image,
+    hope,
+    memo,
     status,
     isOpen,
     questions,
@@ -596,28 +648,36 @@ export const useCRUDQuestion = (
   return {
     title,
     when,
-    where,
-    who,
     what,
-    why,
-    how,
+    who,
+    task,
+    done,
+    image,
+    hope,
+    memo,
     status,
-    rowsWhere,
     rowsWhat,
-    rowsWhy,
-    rowsHow,
+    rowsTask,
+    rowsDone,
+    rowsImage,
+    rowsHope,
+    rowsMemo,
     setTitle,
     setWhen,
-    setWhere,
-    setWho,
     setWhat,
-    setWhy,
-    setHow,
+    setWho,
+    setTask,
+    setDone,
+    setImage,
+    setHope,
+    setMemo,
     setStatus,
-    setRowsWhere,
     setRowsWhat,
-    setRowsWhy,
-    setRowsHow,
+    setRowsTask,
+    setRowsDone,
+    setRowsImage,
+    setRowsHope,
+    setRowsMemo,
     onChangeRows,
     onClickCreate,
     onClickUpdate,

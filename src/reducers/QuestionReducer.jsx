@@ -11,11 +11,13 @@ export const QuestionReducer = (state, action) => {
             id: state.slice(-1)[0].id + 1,
             title: action.title,
             when: action.when,
-            where: action.where,
-            who: action.who,
             what: action.what,
-            why: action.why,
-            how: action.how,
+            who: action.who,
+            task: action.task,
+            done: action.done,
+            image: action.image,
+            hope: action.hope,
+            memo: action.memo,
             status: action.status,
           },
         ];
@@ -26,11 +28,13 @@ export const QuestionReducer = (state, action) => {
             id: 1,
             title: action.title,
             when: action.when,
-            where: action.where,
-            who: action.who,
             what: action.what,
-            why: action.why,
-            how: action.how,
+            who: action.who,
+            task: action.task,
+            done: action.done,
+            image: action.image,
+            hope: action.hope,
+            memo: action.memo,
             status: action.status,
           },
         ];
@@ -42,11 +46,13 @@ export const QuestionReducer = (state, action) => {
         if (q.id === action.id) {
           q.title = action.title;
           q.when = action.when;
-          q.where = action.where;
-          q.who = action.who;
           q.what = action.what;
-          q.why = action.why;
-          q.how = action.how;
+          q.who = action.who;
+          q.task = action.task;
+          q.done = action.done;
+          q.image = action.image;
+          q.hope = action.hope;
+          q.memo = action.memo;
           q.status = action.status;
         }
       });

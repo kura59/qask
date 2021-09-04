@@ -22,24 +22,31 @@ const TemplateModal = (props) => {
     onCloseTemplate,
     showMessage,
     title,
-    where,
     what,
-    why,
-    how,
+    task,
+    done,
+    image,
+    hope,
+    memo,
   } = props;
   const [questionText, setQuestionText] = useState("");
   const [rowsText, setRowsText] = useState();
 
   useEffect(() => {
     const template = `${title}についての質問
-${where ? where + "において\n" : ""}${what}
-という問題に対する確認
-${why ? "原因として\n" + why + "\nと考えられる" : "原因は不明"}
+以下の状況の為、
+${hope ? hope : "○○について聞きたい"}
+
+${what}
+という問題が発生している
 ${
-  how
-    ? "そのため、\n" + how + "\nという解決策を考えている"
-    : "解決策がわからない"
-}`;
+  task
+    ? "それに対し以下の課題がある\n" + task
+    : "それに対し必要な課題はわかっていない"
+}
+${done ? "以下を試してみた\n" + done : "何をしてみるべきかわからない"}
+${image ? image + "\nと考えている" : ""}
+`;
     setQuestionText(template);
     setRowsText(template.split("\n").length);
   }, [isOpenTemplate]);
