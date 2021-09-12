@@ -18,49 +18,45 @@ const Board = () => {
   const [inQuestions, dispatchIn] = useReducer(QuestionReducer, null);
   const [solvedQuestions, dispatchSolved] = useReducer(QuestionReducer, null);
 
-  const fetchQuestionsNew = useCallback(async () => {
-    //ユーザーに紐づく質問（New）を取得
-    const dataQuestionsNew = await client
-      .from("question_new")
-      .select("questions")
-      .match({ user_id: user.id });
-    //質問（New）が存在すれば、stateに設定する
-    if (dataQuestionsNew.data.length !== 0) {
-      dispatch({ type: "SELECT", data: dataQuestionsNew.data[0].questions });
-    }
-  }, []);
-  const fetchQuestionsIn = useCallback(async () => {
-    //ユーザーに紐づく質問（InQuestion）を取得
-    const dataQuestionsIn = await client
-      .from("question_in")
-      .select("questions")
-      .match({ user_id: user.id });
-    //質問（InQuestion）が存在すれば、stateに設定する
-    if (dataQuestionsIn.data.length !== 0) {
-      dispatchIn({ type: "SELECT", data: dataQuestionsIn.data[0].questions });
-    }
-  }, []);
-  const fetchQuestionsSolved = useCallback(async () => {
-    //ユーザーに紐づく質問（solvedQuestion）を取得
-    const dataQuestionsSolved = await client
-      .from("question_solved")
-      .select("questions")
-      .match({ user_id: user.id });
-    //質問（solvedQuestion）が存在すれば、stateに設定する
-    if (dataQuestionsSolved.data.length !== 0) {
-      dispatchSolved({
-        type: "SELECT",
-        data: dataQuestionsSolved.data[0].questions,
-      });
-    }
-  }, []);
+  const fetchQuestions = useCallback(
+    async (dbName) => {
+      //ユーザーに紐づく質問（New/In/Solved）を取得
+      const dataQuestions = await client
+        .from(dbName)
+        .select("questions")
+        .match({ user_id: user.id });
+      //質問（New/In/Solved）が存在すれば、stateに設定する
+      if (dataQuestions.data.length !== 0) {
+        switch (dbName) {
+          case "question_new":
+            dispatch({ type: "SELECT", data: dataQuestions.data[0].questions });
+            break;
+          case "question_in":
+            dispatchIn({
+              type: "SELECT",
+              data: dataQuestions.data[0].questions,
+            });
+            break;
+          case "question_solved":
+            dispatchSolved({
+              type: "SELECT",
+              data: dataQuestions.data[0].questions,
+            });
+            break;
+          default:
+            break;
+        }
+      }
+    },
+    [user.id]
+  );
 
   //ユーザーに紐づく質問を参照し、questions,inQuestions,solvedQuestionsそれぞれのstateに設定
   useEffect(() => {
-    fetchQuestionsNew();
-    fetchQuestionsIn();
-    fetchQuestionsSolved();
-  }, [fetchQuestionsNew, fetchQuestionsIn, fetchQuestionsSolved]);
+    fetchQuestions("question_new");
+    fetchQuestions("question_in");
+    fetchQuestions("question_solved");
+  }, [fetchQuestions]);
 
   const onClickCard = useCallback(
     (id, status) => {

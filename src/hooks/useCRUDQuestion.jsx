@@ -16,22 +16,26 @@ export const useCRUDQuestion = (
   solvedQuestions,
   client
 ) => {
-  const [title, setTitle] = useState("");
-  const [when, setWhen] = useState("");
-  const [what, setWhat] = useState("");
-  const [who, setWho] = useState("");
-  const [task, setTask] = useState("");
-  const [done, setDone] = useState("");
-  const [image, setImage] = useState("");
-  const [hope, setHope] = useState("");
-  const [memo, setMemo] = useState("");
-  const [status, setStatus] = useState("");
-  const [rowsWhat, setRowsWhat] = useState();
-  const [rowsTask, setRowsTask] = useState();
-  const [rowsDone, setRowsDone] = useState();
-  const [rowsImage, setRowsImage] = useState();
-  const [rowsHope, setRowsHope] = useState();
-  const [rowsMemo, setRowsMemo] = useState();
+  const [detail, setDetail] = useState({
+    title: "",
+    when: "",
+    what: "",
+    who: "",
+    task: "",
+    done: "",
+    image: "",
+    hope: "",
+    memo: "",
+    status: "",
+  });
+  const [row, setRow] = useState({
+    rowsWhat: 3,
+    rowsTask: 3,
+    rowsDone: 3,
+    rowsImage: 3,
+    rowsHope: 3,
+    rowsMemo: 3,
+  });
 
   const { user } = Auth.useUser();
 
@@ -40,117 +44,120 @@ export const useCRUDQuestion = (
     const valLength = val.split("\n").length;
     switch (type) {
       case "what":
-        setWhat(val);
-        valLength > 3 ? setRowsWhat(valLength) : setRowsWhat(3);
+        setDetail((prevDetail) => {
+          return {
+            ...prevDetail,
+            what: val,
+          };
+        });
+        setRow((prevRow) => {
+          return {
+            ...prevRow,
+            rowsWhat: valLength > 3 ? valLength : 3,
+          };
+        });
         break;
       case "task":
-        setTask(val);
-        valLength > 3 ? setRowsTask(valLength) : setRowsTask(3);
+        setDetail((prevDetail) => {
+          return {
+            ...prevDetail,
+            task: val,
+          };
+        });
+        setRow((prevRow) => {
+          return {
+            ...prevRow,
+            rowsTask: valLength > 3 ? valLength : 3,
+          };
+        });
         break;
       case "done":
-        setDone(val);
-        valLength > 3 ? setRowsDone(valLength) : setRowsDone(3);
+        setDetail((prevDetail) => {
+          return {
+            ...prevDetail,
+            done: val,
+          };
+        });
+        setRow((prevRow) => {
+          return {
+            ...prevRow,
+            rowsDone: valLength > 3 ? valLength : 3,
+          };
+        });
         break;
       case "image":
-        setImage(val);
-        valLength > 3 ? setRowsImage(valLength) : setRowsImage(3);
+        setDetail((prevDetail) => {
+          return {
+            ...prevDetail,
+            image: val,
+          };
+        });
+        setRow((prevRow) => {
+          return {
+            ...prevRow,
+            rowsImage: valLength > 3 ? valLength : 3,
+          };
+        });
         break;
       case "hope":
-        setHope(val);
-        valLength > 3 ? setRowsHope(valLength) : setRowsHope(3);
+        setDetail((prevDetail) => {
+          return {
+            ...prevDetail,
+            hope: val,
+          };
+        });
+        setRow((prevRow) => {
+          return {
+            ...prevRow,
+            rowsHope: valLength > 3 ? valLength : 3,
+          };
+        });
         break;
       case "memo":
-        setMemo(val);
-        valLength > 3 ? setRowsMemo(valLength) : setRowsMemo(3);
+        setDetail((prevDetail) => {
+          return {
+            ...prevDetail,
+            memo: val,
+          };
+        });
+        setRow((prevRow) => {
+          return {
+            ...prevRow,
+            rowsMemo: valLength > 3 ? valLength : 3,
+          };
+        });
         break;
     }
   };
 
   //ログインユーザーに紐づく情報がDBに登録されているかを参照する
-  const selectNewQuestion = useCallback(async () => {
-    return await client
-      .from("question_new")
-      .select("user_id")
-      .match({ user_id: user.id });
-  }, []);
-
-  //ログインユーザーに紐づく情報がDBに登録されているかを参照する
-  const selectInQuestion = useCallback(async () => {
-    return await client
-      .from("question_in")
-      .select("user_id")
-      .match({ user_id: user.id });
-  }, []);
-
-  //ログインユーザーに紐づく情報がDBに登録されているかを参照する
-  const selectSolvedQuestion = useCallback(async () => {
-    return await client
-      .from("question_solved")
-      .select("user_id")
-      .match({ user_id: user.id });
-  }, []);
-
-  //質問情報をユーザーに紐づけてDBに登録する
-  const insertNewQuestion = useCallback(
-    async (obj) => {
-      await client
-        .from("question_new")
-        .insert({ user_id: user.id, questions: obj });
+  const selectQuestion = useCallback(
+    async (dbName) => {
+      return await client
+        .from(dbName)
+        .select("user_id")
+        .match({ user_id: user.id });
     },
-    [questions]
+    [client, user.id]
   );
 
   //質問情報をユーザーに紐づけてDBに登録する
-  const insertInQuestion = useCallback(
-    async (obj) => {
-      await client
-        .from("question_in")
-        .insert({ user_id: user.id, questions: obj });
+  const insertQuestion = useCallback(
+    async (obj, dbName) => {
+      await client.from(dbName).insert({ user_id: user.id, questions: obj });
     },
-    [inQuestions]
-  );
-
-  //質問情報をユーザーに紐づけてDBに登録する
-  const insertSolvedQuestion = useCallback(
-    async (obj) => {
-      await client
-        .from("question_solved")
-        .insert({ user_id: user.id, questions: obj });
-    },
-    [solvedQuestions]
+    [client, user.id]
   );
 
   //ユーザーに紐づくDBの質問情報を更新する
-  const updateNewQuestion = useCallback(
-    async (obj) => {
+  const updateQuestion = useCallback(
+    async (obj, dbName) => {
       await client
-        .from("question_new")
+        .from(dbName)
         .update({ questions: obj })
         .match({ user_id: user.id });
     },
-    [questions]
-  );
-
-  //ユーザーに紐づくDBの質問情報を更新する
-  const updateInQuestion = useCallback(
-    async (obj) => {
-      await client
-        .from("question_in")
-        .update({ questions: obj })
-        .match({ user_id: user.id });
-    },
-    [inQuestions]
-  );
-
-  //ユーザーに紐づくDBの質問情報を更新する
-  const updateSolvedQuestion = useCallback(
-    async (obj) => {
-      await client
-        .from("question_solved")
-        .update({ questions: obj })
-        .match({ user_id: user.id });
-    },
-    [solvedQuestions]
+    [client, user.id]
   );
 
   //dispatchによる更新直後のstateを即時反映させて使用できなかったため、再定義用
@@ -160,16 +167,7 @@ export const useCRUDQuestion = (
         ...state,
         {
           id: state.slice(-1)[0].id + 1,
-          title: title,
-          when: when,
-          what: what,
-          who: who,
-          task: task,
-          done: done,
-          image: image,
-          hope: hope,
-          memo: memo,
-          status: status,
+          ...detail,
         },
       ];
       return state_add;
@@ -177,16 +175,7 @@ export const useCRUDQuestion = (
       const state_new = [
         {
           id: 1,
-          title: title,
-          when: when,
-          what: what,
-          who: who,
-          task: task,
-          done: done,
-          image: image,
-          hope: hope,
-          memo: memo,
-          status: status,
+          ...detail,
         },
       ];
       return state_new;
@@ -198,16 +187,16 @@ export const useCRUDQuestion = (
     const state_copy = state.slice();
     state_copy.map((q) => {
       if (q.id === question.id) {
-        q.title = title;
-        q.when = when;
-        q.what = what;
-        q.who = who;
-        q.task = task;
-        q.done = done;
-        q.image = image;
-        q.hope = hope;
-        q.memo = memo;
-        q.status = status;
+        q.title = detail.title;
+        q.when = detail.when;
+        q.what = detail.what;
+        q.who = detail.who;
+        q.task = detail.task;
+        q.done = detail.done;
+        q.image = detail.image;
+        q.hope = detail.hope;
+        q.memo = detail.memo;
+        q.status = detail.status;
       }
     });
     return state_copy;
@@ -225,142 +214,110 @@ export const useCRUDQuestion = (
 
   //「作成」クリック時の処理
   const onClickCreate = useCallback(async () => {
-    if (title === "") {
+    if (detail.title === "") {
       showMessage({
         title: "タイトルを入力してください。",
         status: "error",
       });
     } else {
-      switch (status) {
+      switch (detail.status) {
         case "1":
-          const userDataNew = await selectNewQuestion();
+          const userDataNew = await selectQuestion("question_new");
           dispatch({
             type: "CREATE",
-            title: title,
-            when: when,
-            what: what,
-            who: who,
-            task: task,
-            done: done,
-            image: image,
-            hope: hope,
-            memo: memo,
-            status: status,
+            ...detail,
           });
 
           //dispatchによる更新が即時反映されないため、更新後のstateを再定義することで対応
           if (userDataNew.data.length === 0) {
-            await insertNewQuestion(redefinitionCreate(questions));
+            await insertQuestion(redefinitionCreate(questions), "question_new");
           } else {
-            await updateNewQuestion(redefinitionCreate(questions));
+            await updateQuestion(redefinitionCreate(questions), "question_new");
           }
           break;
         case "2":
-          const userDataIn = await selectInQuestion();
+          const userDataIn = await selectQuestion("question_in");
           dispatchIn({
             type: "CREATE",
-            title: title,
-            when: when,
-            what: what,
-            who: who,
-            task: task,
-            done: done,
-            image: image,
-            hope: hope,
-            memo: memo,
-            status: status,
+            ...detail,
           });
 
           //dispatchによる更新が即時反映されないため、更新後のstateを再定義することで対応
           if (userDataIn.data.length === 0) {
-            await insertInQuestion(redefinitionCreate(inQuestions));
+            await insertQuestion(
+              redefinitionCreate(inQuestions),
+              "question_in"
+            );
           } else {
-            await updateInQuestion(redefinitionCreate(inQuestions));
+            await updateQuestion(
+              redefinitionCreate(inQuestions),
+              "question_in"
+            );
           }
           break;
         case "3":
-          const userDataSolved = await selectSolvedQuestion();
+          const userDataSolved = await selectQuestion("question_solved");
           dispatchSolved({
             type: "CREATE",
-            title: title,
-            when: when,
-            what: what,
-            who: who,
-            task: task,
-            done: done,
-            image: image,
-            hope: hope,
-            memo: memo,
-            status: status,
+            ...detail,
           });
 
           //dispatchによる更新が即時反映されないため、更新後のstateを再定義することで対応
           if (userDataSolved.data.length === 0) {
-            await insertSolvedQuestion(redefinitionCreate(solvedQuestions));
+            await insertQuestion(
+              redefinitionCreate(solvedQuestions),
+              "question_solved"
+            );
           } else {
-            await updateSolvedQuestion(redefinitionCreate(solvedQuestions));
+            await updateQuestion(
+              redefinitionCreate(solvedQuestions),
+              "question_solved"
+            );
           }
           break;
       }
-      setTitle("");
-      setWhen("");
-      setWhat("");
-      setWho("");
-      setTask("");
-      setDone("");
-      setImage("");
-      setHope("");
-      setMemo("");
-      setStatus("1");
+      setDetail((prevDetail) => {
+        return {
+          ...prevDetail,
+          title: "",
+          when: "",
+          what: "",
+          who: "",
+          task: "",
+          done: "",
+          image: "",
+          hope: "",
+          memo: "",
+          status: "1",
+        };
+      });
       onClose();
     }
-  }, [
-    question,
-    title,
-    when,
-    what,
-    who,
-    task,
-    done,
-    image,
-    hope,
-    memo,
-    status,
-    isOpen,
-    questions,
-    inQuestions,
-    solvedQuestions,
-  ]);
+  }, [question, detail, isOpen, questions, inQuestions, solvedQuestions]);
 
   //「更新」クリック時の処理
   const onClickUpdate = useCallback(async () => {
-    if (title === "") {
+    if (detail.title === "") {
       showMessage({
         title: "タイトルを入力してください。",
         status: "error",
       });
     } else {
-      switch (status) {
+      switch (detail.status) {
         case "1":
-          const userDataNew = await selectNewQuestion();
+          const userDataNew = await selectQuestion("question_new");
           switch (question.status) {
             case "1":
               dispatch({
                 type: "UPDATE",
                 id: question.id,
-                title: title,
-                when: when,
-                what: what,
-                who: who,
-                task: task,
-                done: done,
-                image: image,
-                hope: hope,
-                memo: memo,
-                status: status,
+                ...detail,
               });
               //dispatchによる更新が即時反映されないため、更新後のstateを再定義することで対応
-              await updateNewQuestion(redefinitionUpdate(questions));
+              await updateQuestion(
+                redefinitionUpdate(questions),
+                "question_new"
+              );
               break;
             case "2":
               dispatchIn({
@@ -369,23 +326,23 @@ export const useCRUDQuestion = (
               });
               dispatch({
                 type: "CREATE",
-                title: title,
-                when: when,
-                what: what,
-                who: who,
-                task: task,
-                done: done,
-                image: image,
-                hope: hope,
-                memo: memo,
-                status: status,
+                ...detail,
               });
               //dispatchによる更新が即時反映されないため、更新後のstateを再定義することで対応
-              await updateInQuestion(redefinitionDelete(inQuestions));
+              await updateQuestion(
+                redefinitionDelete(inQuestions),
+                "question_in"
+              );
               if (userDataNew.data.length === 0) {
-                await insertNewQuestion(redefinitionCreate(questions));
+                await insertQuestion(
+                  redefinitionCreate(questions),
+                  "question_new"
+                );
               } else {
-                await updateNewQuestion(redefinitionCreate(questions));
+                await updateQuestion(
+                  redefinitionCreate(questions),
+                  "question_new"
+                );
               }
               break;
             case "3":
@@ -395,47 +352,41 @@ export const useCRUDQuestion = (
               });
               dispatch({
                 type: "CREATE",
-                title: title,
-                when: when,
-                what: what,
-                who: who,
-                task: task,
-                done: done,
-                image: image,
-                hope: hope,
-                memo: memo,
-                status: status,
+                ...detail,
               });
               //dispatchによる更新が即時反映されないため、更新後のstateを再定義することで対応
-              await updateSolvedQuestion(redefinitionDelete(solvedQuestions));
+              await updateQuestion(
+                redefinitionDelete(solvedQuestions),
+                "question_solved"
+              );
               if (userDataNew.data.length === 0) {
-                await insertNewQuestion(redefinitionCreate(questions));
+                await insertQuestion(
+                  redefinitionCreate(questions),
+                  "question_new"
+                );
               } else {
-                await updateNewQuestion(redefinitionCreate(questions));
+                await updateQuestion(
+                  redefinitionCreate(questions),
+                  "question_new"
+                );
               }
               break;
           }
           break;
         case "2":
-          const userDataIn = await selectInQuestion();
+          const userDataIn = await selectQuestion("question_in");
           switch (question.status) {
             case "2":
               dispatchIn({
                 type: "UPDATE",
                 id: question.id,
-                title: title,
-                when: when,
-                what: what,
-                who: who,
-                task: task,
-                done: done,
-                image: image,
-                hope: hope,
-                memo: memo,
-                status: status,
+                ...detail,
               });
               //dispatchによる更新が即時反映されないため、更新後のstateを再定義することで対応
-              await updateInQuestion(redefinitionUpdate(inQuestions));
+              await updateQuestion(
+                redefinitionUpdate(inQuestions),
+                "question_in"
+              );
               break;
             case "1":
               dispatch({
@@ -444,23 +395,23 @@ export const useCRUDQuestion = (
               });
               dispatchIn({
                 type: "CREATE",
-                title: title,
-                when: when,
-                what: what,
-                who: who,
-                task: task,
-                done: done,
-                image: image,
-                hope: hope,
-                memo: memo,
-                status: status,
+                ...detail,
               });
               //dispatchによる更新が即時反映されないため、更新後のstateを再定義することで対応
-              await updateNewQuestion(redefinitionDelete(questions));
+              await updateQuestion(
+                redefinitionDelete(questions),
+                "question_new"
+              );
               if (userDataIn.data.length === 0) {
-                await insertInQuestion(redefinitionCreate(inQuestions));
+                await insertQuestion(
+                  redefinitionCreate(inQuestions),
+                  "question_in"
+                );
               } else {
-                await updateInQuestion(redefinitionCreate(inQuestions));
+                await updateQuestion(
+                  redefinitionCreate(inQuestions),
+                  "question_in"
+                );
               }
               break;
             case "3":
@@ -470,47 +421,41 @@ export const useCRUDQuestion = (
               });
               dispatchIn({
                 type: "CREATE",
-                title: title,
-                when: when,
-                what: what,
-                who: who,
-                task: task,
-                done: done,
-                image: image,
-                hope: hope,
-                memo: memo,
-                status: status,
+                ...detail,
               });
               //dispatchによる更新が即時反映されないため、更新後のstateを再定義することで対応
-              await updateSolvedQuestion(redefinitionDelete(solvedQuestions));
+              await updateQuestion(
+                redefinitionDelete(solvedQuestions),
+                "question_solved"
+              );
               if (userDataIn.data.length === 0) {
-                await insertInQuestion(redefinitionCreate(inQuestions));
+                await insertQuestion(
+                  redefinitionCreate(inQuestions),
+                  "question_in"
+                );
               } else {
-                await updateInQuestion(redefinitionCreate(inQuestions));
+                await updateQuestion(
+                  redefinitionCreate(inQuestions),
+                  "question_in"
+                );
               }
               break;
           }
           break;
         case "3":
-          const userDataSolved = await selectSolvedQuestion();
+          const userDataSolved = await selectQuestion("question_solved");
           switch (question.status) {
             case "3":
               dispatchSolved({
                 type: "UPDATE",
                 id: question.id,
-                title: title,
-                when: when,
-                what: what,
-                who: who,
-                task: task,
-                done: done,
-                image: image,
-                hope: hope,
-                memo: memo,
-                status: status,
+                ...detail,
               });
               //dispatchによる更新が即時反映されないため、更新後のstateを再定義することで対応
-              await updateSolvedQuestion(redefinitionUpdate(solvedQuestions));
+              await updateQuestion(
+                redefinitionUpdate(solvedQuestions),
+                "question_solved"
+              );
               break;
             case "1":
               dispatch({
@@ -519,23 +464,23 @@ export const useCRUDQuestion = (
               });
               dispatchSolved({
                 type: "CREATE",
-                title: title,
-                when: when,
-                what: what,
-                who: who,
-                task: task,
-                done: done,
-                image: image,
-                hope: hope,
-                memo: memo,
-                status: status,
+                ...detail,
               });
               //dispatchによる更新が即時反映されないため、更新後のstateを再定義することで対応
-              await updateNewQuestion(redefinitionDelete(questions));
+              await updateQuestion(
+                redefinitionDelete(questions),
+                "question_new"
+              );
               if (userDataSolved.data.length === 0) {
-                await insertSolvedQuestion(redefinitionCreate(solvedQuestions));
+                await insertQuestion(
+                  redefinitionCreate(solvedQuestions),
+                  "question_solved"
+                );
               } else {
-                await updateSolvedQuestion(redefinitionCreate(solvedQuestions));
+                await updateQuestion(
+                  redefinitionCreate(solvedQuestions),
+                  "question_solved"
+                );
               }
               break;
             case "2":
@@ -545,68 +490,42 @@ export const useCRUDQuestion = (
               });
               dispatchSolved({
                 type: "CREATE",
-                title: title,
-                when: when,
-                what: what,
-                who: who,
-                task: task,
-                done: done,
-                image: image,
-                hope: hope,
-                memo: memo,
-                status: status,
+                ...detail,
               });
               //dispatchによる更新が即時反映されないため、更新後のstateを再定義することで対応
-              await updateInQuestion(redefinitionDelete(inQuestions));
+              await updateQuestion(
+                redefinitionDelete(inQuestions),
+                "question_in"
+              );
               if (userDataSolved.data.length === 0) {
-                await insertSolvedQuestion(redefinitionCreate(solvedQuestions));
+                await insertQuestion(
+                  redefinitionCreate(solvedQuestions),
+                  "question_solved"
+                );
               } else {
-                await updateSolvedQuestion(redefinitionCreate(solvedQuestions));
+                await updateQuestion(
+                  redefinitionCreate(solvedQuestions),
+                  "question_solved"
+                );
               }
               break;
           }
           break;
       }
-      // setTitle("");
-      // setWhen("");
-      // setWhat("");
-      // setWho("");
-      // setTask("");
-      // setDone("");
-      // setImage("");
-      // setHope("");
-      // setMemo("");
-      // setStatus("1");
       onClose();
     }
-  }, [
-    question,
-    title,
-    when,
-    what,
-    who,
-    task,
-    done,
-    image,
-    hope,
-    memo,
-    status,
-    isOpen,
-    questions,
-    inQuestions,
-    solvedQuestions,
-  ]);
+  }, [question, detail, isOpen, questions, inQuestions, solvedQuestions]);
 
   //削除アイコンクリックして、「削除」クリック時の処理
   const onClickDelete = useCallback(async () => {
-    switch (status) {
+    switch (detail.status) {
       case "1":
         dispatch({
           type: "DELETE",
           id: question.id,
         });
         //dispatchによる更新が即時反映されないため、更新後のstateを再定義することで対応
-        await updateNewQuestion(redefinitionDelete(questions));
+        await updateQuestion(redefinitionDelete(questions), "question_new");
         break;
       case "2":
         dispatchIn({
@@ -614,7 +533,7 @@ export const useCRUDQuestion = (
           id: question.id,
         });
         //dispatchによる更新が即時反映されないため、更新後のstateを再定義することで対応
-        await updateInQuestion(redefinitionDelete(inQuestions));
+        await updateQuestion(redefinitionDelete(inQuestions), "question_in");
         break;
       case "3":
         dispatchSolved({
@@ -622,62 +541,21 @@ export const useCRUDQuestion = (
           id: question.id,
         });
         //dispatchによる更新が即時反映されないため、更新後のstateを再定義することで対応
-        await updateSolvedQuestion(redefinitionDelete(solvedQuestions));
+        await updateQuestion(
+          redefinitionDelete(solvedQuestions),
+          "question_solved"
+        );
         break;
     }
     onCloseAlert();
     onClose();
-  }, [
-    question,
-    title,
-    when,
-    what,
-    who,
-    task,
-    done,
-    image,
-    hope,
-    memo,
-    status,
-    isOpen,
-    questions,
-    inQuestions,
-    solvedQuestions,
-  ]);
+  }, [question, detail, isOpen, questions, inQuestions, solvedQuestions]);
 
   return {
-    title,
-    when,
-    what,
-    who,
-    task,
-    done,
-    image,
-    hope,
-    memo,
-    status,
-    rowsWhat,
-    rowsTask,
-    rowsDone,
-    rowsImage,
-    rowsHope,
-    rowsMemo,
-    setTitle,
-    setWhen,
-    setWhat,
-    setWho,
-    setTask,
-    setDone,
-    setImage,
-    setHope,
-    setMemo,
-    setStatus,
-    setRowsWhat,
-    setRowsTask,
-    setRowsDone,
-    setRowsImage,
-    setRowsHope,
-    setRowsMemo,
+    detail,
+    setDetail,
+    row,
+    setRow,
     onChangeRows,
     onClickCreate,
     onClickUpdate,
