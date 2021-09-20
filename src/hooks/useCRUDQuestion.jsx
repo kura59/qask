@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import { Auth } from "@supabase/ui";
 
-//質問作成・更新・削除処理、テキストエリアの行可変処理用のカスタムフック branch
+// 質問作成・更新・削除処理、テキストエリアの行可変処理用のカスタムフック
 export const useCRUDQuestion = (
   dispatch,
   dispatchIn,
